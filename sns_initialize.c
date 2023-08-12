@@ -545,7 +545,7 @@ static void initialize_fields_using_previous_solve
   {
     const char *region1 = 0;
     const char *region2 = 0;
-    if (new_phys->grid->kind == Grid_SplitCubedSpherical_NSNS)
+    if (new_phys->grid->kind == Grid_SplitCubedSpherical_SNS)
     {
       /* since filling_box,outermost are fixed, only copy */
       region1 = "filling_box,outermost";
@@ -606,7 +606,7 @@ static void move_jacobian
   const char *name1 = 0;
   const char *name2 = 0;
   
-  if(new_phys->grid->kind == Grid_SplitCubedSpherical_NSNS)
+  if(new_phys->grid->kind == Grid_SplitCubedSpherical_SNS)
   {
     /* move Jacobian of outermost */
     gnew = mygrid(new_phys,"outermost");
@@ -663,7 +663,7 @@ static void move_jacobian
       }
     }
     
-  }/* if(new_phys->grid->kind == Grid_SplitCubedSpherical_NSNS) */
+  }/* if(new_phys->grid->kind == Grid_SplitCubedSpherical_SNS) */
   else
   {
     Error0(NO_OPTION);
