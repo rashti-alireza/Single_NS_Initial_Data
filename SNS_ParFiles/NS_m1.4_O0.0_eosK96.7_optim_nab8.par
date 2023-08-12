@@ -7,7 +7,6 @@ Project = Single_NS_initial_data
 
 #### SNS binary:
 #SNS_separation                  = 50.
-#SNS_angular_velocity            = auto
 
 SNS_start_off                   = parameter_file
 SNS_observe_ADM_P               = S_obj1+S_obj2,default

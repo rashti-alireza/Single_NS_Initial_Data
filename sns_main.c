@@ -105,8 +105,8 @@ static void set_default_parameters(void)
   //!/* how far are SNS */
   //!Pset_default(P_"separation","0.");
   
-  //!/* how fast SNS angular velocity */
-  //!Pset_default(P_"angular_velocity","0.");
+  /* how fast SNS angular velocity, we need this for phi initialization */
+  Pset_default(P_"angular_velocity","0.");
   
   //!/* how fast SNS infall velocity */
   //!Pset_default(P_"infall_velocity","0.");
