@@ -7,7 +7,7 @@
 
 
 /* initial data for NS-NS binary system */
-int NS_NS_Binary_Initial_Data(void *vp)
+int Single_NS_Initial_Data(void *vp)
 {
   /* if this is a generic ID reader call */
   if (strcmp_i(PgetsEZ("IDR_NSNS_export_id"),"generic"))
