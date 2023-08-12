@@ -236,8 +236,8 @@ static void
   // one must note that if mass of the object is being iterated, 
   // this auto option is not very ideal, since the final radius is not
   // known yet */
-  if (Pcmps("grid_NS_central_box_length","auto"))
-    Psetd("grid_NS_central_box_length",
+  if (Pcmps("grid_central_box_length","auto"))
+    Psetd("grid_central_box_length",
           ns_box_len_ratio*grid_char->params[Ins]->r_min);
           
   // TODO: does the following make sense?
