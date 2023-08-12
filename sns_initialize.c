@@ -83,15 +83,13 @@ static Physics_T *infer_new_physics(Physics_T *const old_sns)
   physics(old_ns,STAR_TUNE_EULER_CONST);
   //physics(old_ns,STRESS_ENERGY_UPDATE);
   
-  
-  physics(old_sns,SYS_TUNE_P_ADM);
+  //!physics(old_sns,SYS_TUNE_P_ADM);
   
   physics(old_ns,STRESS_ENERGY_UPDATE);
-  physics(old_ns,STAR_TUNE_FORCE_BALANCE);
+  //!physics(old_ns,STAR_TUNE_FORCE_BALANCE);
   physics(old_ns,STAR_EXTRAPOLATE_MATTERS);
   physics(old_ns,STAR_TUNE_CENTER);
   physics(old_ns,STAR_FIND_SURFACE);
-  
   
   /* new grid */
   create_new_grid(grid_char,sns);
@@ -137,7 +135,6 @@ static Physics_T *infer_new_physics(Physics_T *const old_sns)
   /* update matter fields */
   Psets("NS_enthalpy_neat","yes");
   physics(ns,STRESS_ENERGY_UPDATE);
-  
   
   /* free */
   free_physics(ns);
@@ -230,7 +227,7 @@ static void
   /* grid for characters */
   grid_char->grid = grid;
   
-  if (!Pcmps("grid_kind","SplitCubedSpherical(NS+NS)"))
+  if (!Pcmps("grid_kind","SplitCubedSpherical(NS)"))
     Error0(NO_OPTION);
   
   // automatically, if it is asked. 
@@ -243,13 +240,11 @@ static void
     Psetd("grid_NS_central_box_length",
           ns_box_len_ratio*grid_char->params[Ins]->r_min);
           
-  
-  /* separation */
-  grid_char->S              = Pgetd("SNS_separation");
-  /* NS */
-  grid_char->params[Ins]->l = Pgetd("grid_NS_central_box_length");
-  grid_char->params[Ins]->w = Pgetd("grid_NS_central_box_length");
-  grid_char->params[Ins]->h = Pgetd("grid_NS_central_box_length");
+  // TODO: does the following make sense?
+  grid_char->S              = Pgetd("grid_around_box_length")
+  grid_char->params[Ins]->l = Pgetd("grid_central_box_length");
+  grid_char->params[Ins]->w = Pgetd("grid_central_box_length");
+  grid_char->params[Ins]->h = Pgetd("grid_central_box_length");
     
   /* save the values for a rainy day */
   if (Pgeti("NS_did_NS_surface_finder_work?"))
@@ -297,47 +292,14 @@ static void
       printf(Pretty0"relative change is smaller "
                     "than threshold (%.3e < %.3e).\n",
                     rel_change,Pgetd("NS_surface_change_threshold"));
-      USE_LAST_NS_SURFACE(1);
+      USE_LAST_NS_SURFACE();
     }
   }
   /* since surface finder failed use previous value. */
   else
   {
     printf(Pretty0"NS surface finder failed.\n");
-    USE_LAST_NS_SURFACE(1);
-  }
-  
-  /* save the values for a rainy day */
-  {
-    double rel_change = 0.;
-    /* change the relative difference using coeffs */
-    if (
-        /* if prev value exists */
-        /* if the old and new have the same lmax */
-       )
-    {
-      n    = Ncoeffs_Ylm(lmax);
-      /* diff between old and new */
-      /* relative change df/f */
-      rel_change = (dreal+dimag) /
-                   (L2_norm(n,realClm,0)+L2_norm(n,imagClm,0));
-    
-      /* update if change greater than prescribed */
-      else
-    }
-    {
-    }
-    else
-    {
-      printf(Pretty0"relative change is smaller "
-                    "than threshold (%.3e < %.3e).\n",
-      USE_LAST_NS_SURFACE(2);
-    }
-  }
-  /* since surface finder failed use previous value. */
-  else
-  {
-    USE_LAST_NS_SURFACE(2);
+    USE_LAST_NS_SURFACE();
   }
   
   /* check central box length */
@@ -345,8 +307,6 @@ static void
       grid_char->params[Ins]->w > grid_char->params[Ins]->r_min/2. ||
       grid_char->params[Ins]->h > grid_char->params[Ins]->r_min/2.)
     Error0("NS central box is too big!");
-  
-  /* check central box length */
   
   set_params_of_split_cubed_spherical_grid(grid_char);
     
@@ -384,6 +344,7 @@ static void update_partial_derivatives(Physics_T *const phys,
 }
 
 /* initial B0^i in beta = B0+B1 */
+// TODO: does it make sense?
 static void initial_B0I(Physics_T *const phys,
                        const char *const region)
 {
@@ -521,6 +482,7 @@ Physics_T *sns_read_physics_from_checkpoint(void)
 
 /* using copy or interpolation from old physics to 
 // initialize fields for new physics */
+// TODO double check
 static void initialize_fields_using_previous_solve
             (Physics_T *const new_phys,Physics_T *const old_phys)
 {
@@ -532,8 +494,6 @@ static void initialize_fields_using_previous_solve
   /* matter fields */
   interpolate_fields_from_old_grid_to_new_grid
     (mygrid(old_ns,"NS,NS_around_IB"),mygrid(new_ns,"NS"),"phi,enthalpy",0);
-  
-  interpolate_fields_from_old_grid_to_new_grid
   
   /* if resolution changed */
   if(Pgeti(P_"did_resolution_change?"))
@@ -646,23 +606,6 @@ static void move_jacobian
         }
       }
     }
-    {
-      
-      FOR_ALL_p(gnew->np)
-      {
-        name1 = strchr(gnew->patch[p]->name,'_');
-        for(Uint p2 = 0; p2 < gold->np; ++p2)
-        {
-          name2 = strchr(gold->patch[p2]->name,'_');
-          if(!strcmp(name1,name2))
-          {
-            move_dfdu_jacobian_patch(gnew->patch[p],gold->patch[p2]);
-            break;
-          }
-        }
-      }
-    }
-    
   }/* if(new_phys->grid->kind == Grid_SplitCubedSpherical_SNS) */
   else
   {
