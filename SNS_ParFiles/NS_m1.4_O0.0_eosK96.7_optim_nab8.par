@@ -6,8 +6,6 @@
 Project = Single_NS_initial_data
 
 #### SNS binary:
-#SNS_separation                  = 50.
-
 SNS_start_off                   = parameter_file
 SNS_observe_ADM_P               = S_obj1+S_obj2,default
 SNS_observe_ADM_J               = S_obj1+S_obj2,default
@@ -113,8 +111,7 @@ Eq_B0_U0                        = XCTS_flat_excision_Type1_DDM, .*
 Eq_B0_U1                        = XCTS_flat_excision_Type1_DDM, .*
 Eq_B0_U2                        = XCTS_flat_excision_Type1_DDM, .*
 Eq_update_method                = relaxed_scheme
-Eq_update_weight_phi1           = 0.2
-Eq_update_weight_phi2           = 0.2
+Eq_update_weight_phi            = 0.2
 Eq_update_weight_psi            = 0.2
 Eq_update_weight_alphaPsi       = 0.2
 Eq_update_weight_B0_U0          = 0.2
