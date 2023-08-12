@@ -140,10 +140,10 @@ static void set_default_parameters(void)
   
   /* what to print for properties of SNS, add and separate with comma */
   Pset_default(P_"SNS_properties",
-    "x_CM,y_CM,z_CM,ADM_mass,Komar_mass,mass_ratio,"
+    "x_CM,y_CM,z_CM,ADM_mass,Komar_mass,"
     "Px_ADM,Py_ADM,Pz_ADM,"
     "Jx_ADM,Jy_ADM,Jz_ADM,"
-    "binding_energy,Virial_error");
+    "Virial_error");
     
   //!/* how to tune P_ADM:
   //!// options:[none,adjust(?_CM)], cf. */
