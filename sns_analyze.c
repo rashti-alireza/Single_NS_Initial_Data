@@ -138,26 +138,6 @@ static void compute_properties(Physics_T *const phys/* sns */)
   Psetd("NS_chi_y",s[1]/Pow2(m));
   Psetd("NS_chi_z",s[2]/Pow2(m));
   
-  
-  
-  
-  tov = TOV_init();
-  tov->exit_if_error = 0;
-  tov = TOV_solution(tov);
-  if (tov->status == 0)
-  {
-    /* Note: compactness = adm_mass/Schwarzschild_radius 
-      (not isotropic radius) */
-  }
-  TOV_free(tov);
-  
-  
-
-
-  
-  
-  
-  
   /* SNS: */
   observe(phys,"ADM(M)",Pgets(P_"Observe_ADM_M"),&m);
   Psetd(P_"adm_mass",m);
