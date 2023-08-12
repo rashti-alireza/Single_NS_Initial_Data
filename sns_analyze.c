@@ -138,48 +138,24 @@ static void compute_properties(Physics_T *const phys/* nsns */)
   Psetd("NS1_chi_y",s[1]/Pow2(m));
   Psetd("NS1_chi_z",s[2]/Pow2(m));
   
-  /* NS2: */
-  Psetd("NS2_ADM_mass",m);
   
-  Psetd("NS2_Komar_mass",m);
   
-  Psetd("NS2_baryonic_mass_current",m);
   
   tov = TOV_init();
   tov->exit_if_error = 0;
-  tov->bar_m = Pgetd("NS2_baryonic_mass_current");
   tov = TOV_solution(tov);
   if (tov->status == 0)
   {
-    Psetd("NS2_TOV_ADM_mass",tov->ADM_m);
     /* Note: compactness = adm_mass/Schwarzschild_radius 
       (not isotropic radius) */
-    Psetd("NS2_TOV_compactness",tov->ADM_m/tov->r[tov->N-1]);
-    Psetd("NS2_TOV_radius",tov->rbar[tov->N-1]);
   }
   TOV_free(tov);
   
   
-  Psetd("NS2_x_CM",cm[0]+x_CM);
-  Psetd("NS2_y_CM",cm[1]+y_CM);
-  Psetd("NS2_z_CM",cm[2]+z_CM);
 
-  Psetd("NS2_Px_ADM",p[0]);
-  Psetd("NS2_Py_ADM",p[1]);
-  Psetd("NS2_Pz_ADM",p[2]);
 
-  Psetd("NS2_Jx_ADM",j[0]);
-  Psetd("NS2_Jy_ADM",j[1]);
-  Psetd("NS2_Jz_ADM",j[2]);
   
-  Psetd("NS2_Spin_x",s[0]);
-  Psetd("NS2_Spin_y",s[1]);
-  Psetd("NS2_Spin_z",s[2]);
   
-  m = Pgetd("NS2_adm_mass");
-  Psetd("NS2_chi_x",s[0]/Pow2(m));
-  Psetd("NS2_chi_y",s[1]/Pow2(m));
-  Psetd("NS2_chi_z",s[2]/Pow2(m));
   
   
   /* NSNS: */
@@ -200,12 +176,10 @@ static void compute_properties(Physics_T *const phys/* nsns */)
   Psetd(P_"Jz_ADM",j[2]);
 
   /* mass ratio (q >= 1.) */
-  double q = Pgetd("NS2_TOV_ADM_mass")/Pgetd("NS1_TOV_ADM_mass");
   Psetd(P_"mass_ratio",q > 1. ? q : 1./q );
 
   /* binding energy */
   double bin_e = Pgetd(P_"adm_mass") -
-    (Pgetd("NS2_TOV_ADM_mass") + Pgetd("NS1_TOV_ADM_mass"));
   Psetd(P_"binding_energy",bin_e);
 
   /* virial error */
@@ -216,7 +190,6 @@ static void compute_properties(Physics_T *const phys/* nsns */)
   if (0)/* too much inaccurate */
   {
     double m1    = Pgetd("NS1_adm_mass");
-    double m2    = Pgetd("NS2_adm_mass");
     double nu    = m1*m2/Pow2(m1+m2);
     double omega = Pgetd(P_"angular_velocity");
     double m_tot = Pgetd(P_"ADM_mass");

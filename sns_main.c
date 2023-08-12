@@ -315,73 +315,32 @@ static void set_default_parameters(void)
   Pset_default("NS1_RootFinder_Iteration","1000");
   Pset_default("NS1_RootFinder_verbose","no");
   
-  /* NS2 paramters:
   // ============= */
   
   /* NS masses */
-  Pset_default("NS2_baryonic_mass_current","1.");
-  Pset_default("NS2_baryonic_mass","1.");
-  Pset_default("NS2_ADM_mass","1.");
-  Pset_default("NS2_Komar_mass","1.");
-  Pset_default("NS2_TOV_ADM_mass","1.");
-  Pset_default("NS2_TOV_radius","1.");
-  Pset_default("NS2_TOV_compactness","0.");
-  Pset_default("NS2_mass_shedding_indicator","1.");
   
   /* NS EoS: */
-  Pset_default("NS2_EoS_description","NA");
   
   /* [polytropic,piecewise_polytropic] */
-  Pset_default("NS2_EoS_type","NA");
   
   /* unit: [geo] */
-  Pset_default("NS2_EoS_unit","NA");
-  Pset_default("NS2_EoS_K0","NA");
-  Pset_default("NS2_EoS_Gamma","NA");
-  Pset_default("NS2_EoS_rho0_th","NA");
   
   /* -> central matters */
-  Pset_default("NS2_rho0_center","1E-3");
-  Pset_default("NS2_pressure_center","1E-3");
-  Pset_default("NS2_energy_density_center","1E-3");
   
   /* geometrical center of NS.
   // NOTE: geometrical center can be different from patch->c. */ 
-  Pset_default("NS2_center_x","0."); 
-  Pset_default("NS2_center_y","0."); 
-  Pset_default("NS2_center_z","0."); 
-  Pset_default("NS2_x_CM","0."); 
-  Pset_default("NS2_y_CM","0."); 
-  Pset_default("NS2_z_CM","0."); 
   
   /* box length at the center of NS */
-  Pset_default("grid_NS2_central_box_length","auto");
   
   /* spin vector to adjust spin for NS */
-  Pset_default("NS2_Omega_x","0."); 
-  Pset_default("NS2_Omega_y","0."); 
-  Pset_default("NS2_Omega_z","0."); 
   
   /* spin */
-  Pset_default("NS2_chi_x","0."); 
-  Pset_default("NS2_chi_y","0."); 
-  Pset_default("NS2_chi_z","0."); 
-  Pset_default("NS2_spin_x","0."); 
-  Pset_default("NS2_spin_y","0."); 
-  Pset_default("NS2_spin_z","0."); 
   
   /* ADM momentum */
-  Pset_default("NS2_Px_ADM","0."); 
-  Pset_default("NS2_Py_ADM","0."); 
-  Pset_default("NS2_Pz_ADM","0."); 
   
   /* ADM angular momentum */
-  Pset_default("NS2_Jx_ADM","0."); 
-  Pset_default("NS2_Jy_ADM","0."); 
-  Pset_default("NS2_Jz_ADM","0."); 
   
   /* what to print for properties of NS, add and separate with comma */
-  Pset_default(P_"NS2_properties",
    "center_x,center_y,center_z,x_CM,y_CM,z_CM,"
    "max_radius,min_radius,TOV_radius,"
    "ADM_mass,TOV_ADM_mass,Komar_mass,baryonic_mass_current,"
@@ -397,72 +356,41 @@ static void set_default_parameters(void)
   // options:
   // ========
   // o. TOV (see NS physics) */
-  Pset_default("NS2_start_off","TOV"); 
   
   /* max l in Ylm expansion */
-  Pset_default("NS2_surface_Ylm_max_l","1"); 
   
   /* NS surface */
-  Pset_default("NS2_surface_type","perfect_s2"); 
-  Pset_default("NS2_did_NS_surface_change?","1");
   
   /* if new surface relative change exceeds this, NS surface gets updated */
-  Pset_default("NS2_surface_change_threshold","0.0");
   
   /* max allowed surface fails */
-  Pset_default("NS2_surface_max_fail","100");
   
   /* number of surface fails */
-  Pset_default("NS2_surface_num_fail","0");
   
   /* observe method pertinet to NS */
-  Pset_default("NS2_Observe_ADM_M","V_obj,default");
-  Pset_default("NS2_Observe_Komar_M","S_obj,default");
-  Pset_default("NS2_Observe_baryonic_M","V_obj,default");
-  Pset_default("NS2_Observe_ADM_P","S_obj,default");
-  Pset_default("NS2_Observe_ADM_J","S_obj,default");
-  Pset_default("NS2_Observe_CM","V_obj,default");
-  Pset_default("NS2_Observe_spin","S_obj,JRP");
   
   /* smooth and polish phi equation close to the surface */
-  Pset_default("NS2_Eq_phi_polish","0.1");
   
   /* tune and adjust: */
   /* for option cf star_main */
-  Pset_default("NS2_force_balance_equation","adjust(d/dy:Omega)");
-  Pset_default("NS2_force_balance_update_weight","0.");
-  Pset_default("NS2_adjust_center_method","Taylor_expansion");
-  Pset_default("NS2_adjust_center_update_weight","0.");
-  Pset_default("NS2_enthalpy_allowed_residual","1E-8");
-  Pset_default("NS2_enthalpy_L2_residual","0.");
   
   /* extrapolation of matter fields outside NS:
   // options = [inverse_r2,exp2,poly2,inverse_r2_expmr,
                 inverse_r2_expmAr,enthalpy_expmr_phi_inverse_r2]. */
-  Pset_default("NS2_extrapolate_matter_fields","inverse_r2_expmAr");
   
   /* Euler eq. constant */
-  Pset_default("NS2_Euler_equation_constant","-0.8");
-  Pset_default("NS2_Euler_const_update_weight","1.");
   
   /* NS enhtalpy update weight */
-  Pset_default("NS2_enthalpy_update_weight","0.");
   
   /* set enthalpy != 1 on surface to 1
   // options: [yes/no]. */
-  Pset_default("NS2_enthalpy_neat","yes");
   
   /* root finder pertinent to NS */
-  Pset_default("NS2_RootFinder_method","Steepest_Descent");
-  Pset_default("NS2_RootFinder_Tolerance","1E-9");
-  Pset_default("NS2_RootFinder_Iteration","1000");
-  Pset_default("NS2_RootFinder_verbose","no");
   
   /* use Kepler's law to set angular velocity */
   if (Pcmps(P_"angular_velocity","auto"))
   {
     const double m1 = Pgetd("NS1_baryonic_mass");
-    const double m2 = Pgetd("NS2_baryonic_mass");
     
     const double r  = Pgetd(P_"separation");
     const double O  = sqrt((m1+m2)/pow(r,3.));
@@ -470,7 +398,6 @@ static void set_default_parameters(void)
     Psetd(P_"angular_velocity",O);
   }
   
-  /* set NS1 and NS2 centers */
   if (strstr(Pgets("grid_set_NS1"),"right"))
   {
     const double S = Pgetd(P_"separation");
@@ -480,10 +407,6 @@ static void set_default_parameters(void)
     Psetd("NS1_center_y",S/2.);
     Psetd("NS1_center_z",0.);
     
-    /* NS2 center in -y */
-    Psetd("NS2_center_x",0.);
-    Psetd("NS2_center_y",-S/2.);
-    Psetd("NS2_center_z",0.);
   }
   else
   {
@@ -494,19 +417,13 @@ static void set_default_parameters(void)
     Psetd("NS1_center_y",-S/2.);
     Psetd("NS1_center_z",0.);
     
-    /* NS2 center in +y */
-    Psetd("NS2_center_x",0.);
-    Psetd("NS2_center_y",S/2.);
-    Psetd("NS2_center_z",0.);
     
   }
   
   /* set center of mass */
   {
     const double bar_mass1 = Pgetd("NS1_baryonic_mass");
-    const double bar_mass2 = Pgetd("NS2_baryonic_mass");
     const double y_CM = (bar_mass1*Pgetd("NS1_center_y") +
-                         bar_mass2*Pgetd("NS2_center_y"))/(bar_mass1+bar_mass2);
    
     Psetd(P_"x_CM",0.);
     Psetd(P_"y_CM",y_CM);

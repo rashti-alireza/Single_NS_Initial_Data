@@ -83,7 +83,6 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   physics(old_ns1,STAR_TUNE_EULER_CONST);
   //physics(old_ns1,STRESS_ENERGY_UPDATE);
   
-  Psets("NS2_enthalpy_neat","no");
   
   physics(old_nsns,SYS_TUNE_P_ADM);
   
@@ -139,7 +138,6 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   Psets("NS1_enthalpy_neat","yes");
   physics(ns1,STRESS_ENERGY_UPDATE);
   
-  Psets("NS2_enthalpy_neat","yes");
   
   /* free */
   free_physics(ns1);
@@ -150,7 +148,6 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   return nsns;
 }  
 
-/* use a known NS1 and NS2 solution to initialize the physics */
 static Physics_T *guess_new_physics(void)
 {
   FUNC_TIC
@@ -205,12 +202,10 @@ static Physics_T *guess_new_physics(void)
   /* update stress energy-tensor */
   Psetd("NS1_Euler_equation_constant",
         star_NS_current_Euler_eq_const(ns1));
-  Psetd("NS2_Euler_equation_constant",
         
   Psets("NS1_enthalpy_neat","yes");
   physics(ns1,STRESS_ENERGY_UPDATE);
 
-  Psets("NS2_enthalpy_neat","yes");
   
   /* free */
   free_physics(ns1);
@@ -238,7 +233,6 @@ static void
   if (!Pcmps("grid_kind","SplitCubedSpherical(NS+NS)"))
     Error0(NO_OPTION);
   
-  /* set "grid_NS1_central_box_length" and "grid_NS2_central_box_length"
   // automatically, if it is asked. 
   // NOTE: these params are set only for the very first time 
   // and this is important for stability of NS. additionally,
@@ -249,8 +243,6 @@ static void
     Psetd("grid_NS1_central_box_length",
           ns1_box_len_ratio*grid_char->params[Ins1]->r_min);
           
-  if (Pcmps("grid_NS2_central_box_length","auto"))
-    Psetd("grid_NS2_central_box_length",
   
   /* separation */
   grid_char->S              = Pgetd("NSNS_separation");
@@ -258,7 +250,6 @@ static void
   grid_char->params[Ins1]->l = Pgetd("grid_NS1_central_box_length");
   grid_char->params[Ins1]->w = Pgetd("grid_NS1_central_box_length");
   grid_char->params[Ins1]->h = Pgetd("grid_NS1_central_box_length");
-  /* NS2 */
     
   /* save the values for a rainy day */
   if (Pgeti("NS1_did_NS_surface_finder_work?"))
@@ -317,47 +308,35 @@ static void
   }
   
   /* save the values for a rainy day */
-  if (Pgeti("NS2_did_NS_surface_finder_work?"))
   {
     double rel_change = 0.;
     /* change the relative difference using coeffs */
     if (
         /* if prev value exists */
-        PgetddEZ("NS2_surface_R|realClm")  && 
-        PgetddEZ("NS2_surface_R|imagClm")  &&
         /* if the old and new have the same lmax */
        )
     {
-      lmax = (Uint)Pgeti("NS2_surface_R|lmax");
       n    = Ncoeffs_Ylm(lmax);
-      const double *realClm = Pgetdd("NS2_surface_R|realClm");
-      const double *imagClm = Pgetdd("NS2_surface_R|imagClm");
       /* diff between old and new */
       /* relative change df/f */
       rel_change = (dreal+dimag) /
                    (L2_norm(n,realClm,0)+L2_norm(n,imagClm,0));
     
       /* update if change greater than prescribed */
-      if (rel_change > Pgetd("NS2_surface_change_threshold"))
       else
     }
     {
-      update_parameter_array("NS2_surface_R|realClm",
-      update_parameter_array("NS2_surface_R|imagClm",
-      Pseti("NS2_did_NS_surface_change?",1);
     }
     else
     {
       printf(Pretty0"relative change is smaller "
                     "than threshold (%.3e < %.3e).\n",
-                    rel_change,Pgetd("NS2_surface_change_threshold"));
       USE_LAST_NS_SURFACE(2);
     }
   }
   /* since surface finder failed use previous value. */
   else
   {
-    printf(Pretty0"NS2 surface finder failed.\n");
     USE_LAST_NS_SURFACE(2);
   }
   
@@ -368,7 +347,6 @@ static void
     Error0("NS1 central box is too big!");
   
   /* check central box length */
-    Error0("NS2 central box is too big!");
   
   set_params_of_split_cubed_spherical_grid(grid_char);
     
@@ -534,7 +512,6 @@ Physics_T *nsns_read_physics_from_checkpoint(void)
   Psets("NS1_enthalpy_neat","yes");
   physics(ns1,STRESS_ENERGY_UPDATE);
 
-  Psets("NS2_enthalpy_neat","yes");
   
   free_physics(ns1);
 
@@ -583,8 +560,6 @@ static void initialize_fields_using_previous_solve
         (mygrid(old_ns1,region1),mygrid(new_ns1,region2),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
       
-      region1 = "NS2,NS2_around";
-      region2 = "NS2,NS2_around";
       interpolate_fields_from_old_grid_to_new_grid
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
          
@@ -671,8 +646,6 @@ static void move_jacobian
         }
       }
     }
-    /* move Jacobian of NS2 and NS2 around */
-    if (!Pgeti("NS2_did_NS_surface_change?"))
     {
       
       FOR_ALL_p(gnew->np)
