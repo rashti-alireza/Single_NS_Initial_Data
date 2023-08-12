@@ -64,15 +64,15 @@ Physics_T *sns_initialize_new_physics(Physics_T *const old_phys)
 
 
 /* use old physics to infer the new physics */
-static Physics_T *infer_new_physics(Physics_T *const old_nsns)
+static Physics_T *infer_new_physics(Physics_T *const old_sns)
 {
-  if (!old_nsns) return 0;
+  if (!old_sns) return 0;
   
   FUNC_TIC
   
   Physics_T *const sns    = init_physics(0,SNS);/* the whole system */
   Physics_T *const ns1     = init_physics(sns,NS1);/* NS1 part */
-  Physics_T *const old_ns1 = init_physics(old_nsns,NS1);/* NS1 part */
+  Physics_T *const old_ns1 = init_physics(old_sns,NS1);/* NS1 part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   old_ns1->grid_char = grid_char;
   old_ns1->igc       = Ins1;
@@ -84,7 +84,7 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   //physics(old_ns1,STRESS_ENERGY_UPDATE);
   
   
-  physics(old_nsns,SYS_TUNE_P_ADM);
+  physics(old_sns,SYS_TUNE_P_ADM);
   
   physics(old_ns1,STRESS_ENERGY_UPDATE);
   physics(old_ns1,STAR_TUNE_FORCE_BALANCE);
@@ -116,10 +116,10 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   
   /* populate fields */
   physics(sns,FREE_DATA_POPULATE);
-  initialize_fields_using_previous_solve(sns,old_nsns);
+  initialize_fields_using_previous_solve(sns,old_sns);
   
   /* move Jacobian if possible */
-  move_jacobian(sns,old_nsns);
+  move_jacobian(sns,old_sns);
   
   /* beta = B0+B1 */
   physics(sns,ADM_UPDATE_B1I);
