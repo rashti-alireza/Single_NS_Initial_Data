@@ -10,7 +10,7 @@
 int Single_NS_Initial_Data(void *vp)
 {
   /* if this is a generic ID reader call */
-  if (strcmp_i(PgetsEZ("IDR_NSNS_export_id"),"generic"))
+  if (strcmp_i(PgetsEZ("IDR_sns_export_id"),"generic"))
     sns_export_id_generic(vp);
   
   /* otherwise construct initial data */
