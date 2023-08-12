@@ -170,7 +170,7 @@ static void set_default_parameters(void)
   // dF/du preparation is requried. */
   Pset_default(P_"dF/du_prepare","none");
   
-  /* NS1 paramters:
+  /* NS paramters:
   // ============= */
   
   /* NS masses */
