@@ -1,9 +1,9 @@
 /*
 // Alireza Rashti
-// January 2023
+// August 2023
 */
 
-#include "nsns_main.h"
+#include "sns_main.h"
 
 
 /* initial data for NS-NS binary system */
@@ -11,7 +11,7 @@ int Single_NS_Initial_Data(void *vp)
 {
   /* if this is a generic ID reader call */
   if (strcmp_i(PgetsEZ("IDR_NSNS_export_id"),"generic"))
-    nsns_export_id_generic(vp);
+    sns_export_id_generic(vp);
   
   /* otherwise construct initial data */
   else
@@ -39,13 +39,13 @@ static void construct_initial_data(void *vp)
     
     Stop = update_iteration_params(iter,P_,P_"%s_%ux%ux%u");
     
-    new_phys = nsns_initialize_new_physics(old_phys);
+    new_phys = sns_initialize_new_physics(old_phys);
     
     write_checkpoint(new_phys,Pgets(P_"my_directory"));
     
-    nsns_solve_equation(new_phys);
+    sns_solve_equation(new_phys);
     
-    nsns_analyze(new_phys,Pgeti(P_"resolution_iteration"));
+    sns_analyze(new_phys,Pgeti(P_"resolution_iteration"));
     
     free_physics(old_phys);
     

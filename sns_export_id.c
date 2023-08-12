@@ -5,11 +5,11 @@
 
 /* exporting initial data for evolution codes */
 
-#include "nsns_export_id.h"
+#include "sns_export_id.h"
 
 
 /* export ID for a general evolution code */
-void nsns_export_id_generic(void *vp)
+void sns_export_id_generic(void *vp)
 {
   FUNC_TIC
   
@@ -17,7 +17,7 @@ void nsns_export_id_generic(void *vp)
   assert(vp && "The input is null!");  
   
   Elliptica_ID_Reader_T *const idr = vp;
-  Physics_T *nsns = 0;
+  Physics_T *sns = 0;
   ID_Reader_T *points = idr_init();
   double CM[3] = {0.};
   char fields_name[STR_LEN_MAX] = {'\0'};// elliptica field names
@@ -87,8 +87,8 @@ void nsns_export_id_generic(void *vp)
   Pseti(CHECKPOINT_SET_PARAM_ P_"STOP",0);
   /* read physics from checkpoint */
   Psets("checkpoint_file_path",idr->checkpoint_path);
-  nsns = nsns_read_physics_from_checkpoint();
-  points->grid = nsns->grid;
+  sns = sns_read_physics_from_checkpoint();
+  points->grid = sns->grid;
   
   /* get (x,y,z) points from evo. NOTE: no allocation done for (x,y,z) */
   CM[0] = Pgetd(P_"x_CM");
@@ -99,10 +99,10 @@ void nsns_export_id_generic(void *vp)
   /* go from Omega x r to inertial coords sys asymptotically.
   // EVO needs this!? (this param should be set in the reader) */
   // Psets(CHECKPOINT_SET_PARAM_ "ADM_B1I_form","zero");
-  physics(nsns,ADM_UPDATE_Kij);/* need this for nsns_set_evo_fields_generic */
+  physics(sns,ADM_UPDATE_Kij);/* need this for sns_set_evo_fields_generic */
   
   /* set bam fields based on initial data to be usable for evo */
-  nsns_set_evo_fields_generic(nsns->grid);
+  sns_set_evo_fields_generic(sns->grid);
   
   /* write into array */
   idr_interpolate_fields_and_save_in_array(idr,points,fields_name,idr->ifields);
@@ -113,7 +113,7 @@ void nsns_export_id_generic(void *vp)
   points->y = 0;
   points->z = 0;
   idr_free(points);
-  free_physics(nsns);
+  free_physics(sns);
   
   FUNC_TOC  
 }

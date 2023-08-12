@@ -1,4 +1,4 @@
-#include "nsns_header.h"
+#include "sns_header.h"
 #include "id_reader_lib.h"
 #include "elliptica_id_reader_lib.h"
 
@@ -7,6 +7,6 @@
 
 #define STR_LEN_MAX (9999)
 
-void nsns_export_id_generic(void *vp);
-void nsns_set_evo_fields_generic(Grid_T *const grid);
+void sns_export_id_generic(void *vp);
+void sns_set_evo_fields_generic(Grid_T *const grid);
 

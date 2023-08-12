@@ -6,10 +6,10 @@
 /* various functions needed to make a physics object for NS-NS */
 
 
-#include "nsns_initialize.h"
+#include "sns_initialize.h"
 
 /* decide how to initialize the new physics */
-Physics_T *nsns_initialize_new_physics(Physics_T *const old_phys)
+Physics_T *sns_initialize_new_physics(Physics_T *const old_phys)
 {
   Physics_T *new_phys = 0;
   
@@ -44,12 +44,12 @@ Physics_T *nsns_initialize_new_physics(Physics_T *const old_phys)
       Psets(CHECKPOINT_SET_PARAM_ P_"Diagnostics", 
             Pgets("top_directory"));
       
-      new_phys = nsns_read_physics_from_checkpoint();
+      new_phys = sns_read_physics_from_checkpoint();
     }
     
     /* can we resume from a useful checkpoint file */
     else if (can_we_use_checkpoint(Pgets("top_directory")))
-      new_phys = nsns_read_physics_from_checkpoint();
+      new_phys = sns_read_physics_from_checkpoint();
       
     else 
       new_phys = guess_new_physics();
@@ -70,8 +70,8 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   
   FUNC_TIC
   
-  Physics_T *const nsns    = init_physics(0,NSNS);/* the whole system */
-  Physics_T *const ns1     = init_physics(nsns,NS1);/* NS1 part */
+  Physics_T *const sns    = init_physics(0,NSNS);/* the whole system */
+  Physics_T *const ns1     = init_physics(sns,NS1);/* NS1 part */
   Physics_T *const old_ns1 = init_physics(old_nsns,NS1);/* NS1 part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   old_ns1->grid_char = grid_char;
@@ -94,45 +94,45 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   
   
   /* new grid */
-  create_new_grid(grid_char,nsns);
-  ns1->grid = nsns->grid;
+  create_new_grid(grid_char,sns);
+  ns1->grid = sns->grid;
   
   /* set and update parameters */
-  update_params(nsns);
-  physics(nsns,FREE_DATA_SET_PARAMS);
-  physics(nsns,ADM_SET_PARAMS);
-  physics(nsns,SYS_SET_PARAMS);
-  physics(nsns,STRESS_ENERGY_SET_PARAMS);
-  physics(nsns,OBSERVE_SET_PARAMS);  
-  physics(nsns,STAR_SET_PARAMS);
+  update_params(sns);
+  physics(sns,FREE_DATA_SET_PARAMS);
+  physics(sns,ADM_SET_PARAMS);
+  physics(sns,SYS_SET_PARAMS);
+  physics(sns,STRESS_ENERGY_SET_PARAMS);
+  physics(sns,OBSERVE_SET_PARAMS);  
+  physics(sns,STAR_SET_PARAMS);
   
   /* add fields */
-  physics(nsns,ADM_ADD_FIELDS);
-  physics(nsns,FREE_DATA_ADD_FIELDS);
-  physics(nsns,STRESS_ENERGY_ADD_FIELDS);
-  physics(nsns,SYS_ADD_FIELDS);
-  physics(nsns,OBSERVE_ADD_FIELDS);
-  physics(nsns,STAR_ADD_FIELDS);
+  physics(sns,ADM_ADD_FIELDS);
+  physics(sns,FREE_DATA_ADD_FIELDS);
+  physics(sns,STRESS_ENERGY_ADD_FIELDS);
+  physics(sns,SYS_ADD_FIELDS);
+  physics(sns,OBSERVE_ADD_FIELDS);
+  physics(sns,STAR_ADD_FIELDS);
   
   /* populate fields */
-  physics(nsns,FREE_DATA_POPULATE);
-  initialize_fields_using_previous_solve(nsns,old_nsns);
+  physics(sns,FREE_DATA_POPULATE);
+  initialize_fields_using_previous_solve(sns,old_nsns);
   
   /* move Jacobian if possible */
-  move_jacobian(nsns,old_nsns);
+  move_jacobian(sns,old_nsns);
   
   /* beta = B0+B1 */
-  physics(nsns,ADM_UPDATE_B1I);
-  update_partial_derivatives(nsns,".*","^dB0_U.+,^ddB0_U.+");
-  physics(nsns,ADM_UPDATE_beta);
+  physics(sns,ADM_UPDATE_B1I);
+  update_partial_derivatives(sns,".*","^dB0_U.+,^ddB0_U.+");
+  physics(sns,ADM_UPDATE_beta);
   
   /* update derivatives */
-  update_partial_derivatives(nsns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
+  update_partial_derivatives(sns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
                                       "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
   update_partial_derivatives(ns1,"NS1","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
-  physics(nsns,ADM_UPDATE_AConfIJ);
+  physics(sns,ADM_UPDATE_AConfIJ);
   
   /* update matter fields */
   Psets("NS1_enthalpy_neat","yes");
@@ -145,24 +145,24 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   free_grid_char(grid_char);
   
   FUNC_TOC
-  return nsns;
+  return sns;
 }  
 
 static Physics_T *guess_new_physics(void)
 {
   FUNC_TIC
   
-  Physics_T *const nsns = init_physics(0,NSNS);/* the whole system */
-  Physics_T *const ns1  = init_physics(nsns,NS1);/* NS part */
+  Physics_T *const sns = init_physics(0,NSNS);/* the whole system */
+  Physics_T *const ns1  = init_physics(sns,NS1);/* NS part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   
   /* set parameters */
-  physics(nsns,FREE_DATA_SET_PARAMS);
-  physics(nsns,ADM_SET_PARAMS);
-  physics(nsns,SYS_SET_PARAMS);
-  physics(nsns,STRESS_ENERGY_SET_PARAMS);
-  physics(nsns,OBSERVE_SET_PARAMS);  
-  physics(nsns,STAR_SET_PARAMS);
+  physics(sns,FREE_DATA_SET_PARAMS);
+  physics(sns,ADM_SET_PARAMS);
+  physics(sns,SYS_SET_PARAMS);
+  physics(sns,STRESS_ENERGY_SET_PARAMS);
+  physics(sns,OBSERVE_SET_PARAMS);  
+  physics(sns,STAR_SET_PARAMS);
   
   /* create grid */
   ns1->grid_char = grid_char;
@@ -171,33 +171,33 @@ static Physics_T *guess_new_physics(void)
   physics(ns1,STAR_START);
   physics(ns1,STAR_FIND_SURFACE);
   
-  create_new_grid(grid_char,nsns);
-  ns1->grid = nsns->grid;
+  create_new_grid(grid_char,sns);
+  ns1->grid = sns->grid;
   
   /* add fields */
-  physics(nsns,ADM_ADD_FIELDS);
-  physics(nsns,FREE_DATA_ADD_FIELDS);
-  physics(nsns,STRESS_ENERGY_ADD_FIELDS);
-  physics(nsns,SYS_ADD_FIELDS);
-  physics(nsns,OBSERVE_ADD_FIELDS);
-  physics(nsns,STAR_ADD_FIELDS);
+  physics(sns,ADM_ADD_FIELDS);
+  physics(sns,FREE_DATA_ADD_FIELDS);
+  physics(sns,STRESS_ENERGY_ADD_FIELDS);
+  physics(sns,SYS_ADD_FIELDS);
+  physics(sns,OBSERVE_ADD_FIELDS);
+  physics(sns,STAR_ADD_FIELDS);
   
   /* populate fields */
-  physics(nsns,FREE_DATA_POPULATE);
-  physics(nsns,SYS_INITIALIZE_FIELDS);
+  physics(sns,FREE_DATA_POPULATE);
+  physics(sns,SYS_INITIALIZE_FIELDS);
   /* beta = B0+B1 */
-  physics(nsns,ADM_UPDATE_B1I);
-  initial_B0I(nsns,".*");
-  update_partial_derivatives(nsns,".*","^dB0_U.+,^ddB0_U.+");
-  physics(nsns,ADM_UPDATE_beta);
+  physics(sns,ADM_UPDATE_B1I);
+  initial_B0I(sns,".*");
+  update_partial_derivatives(sns,".*","^dB0_U.+,^ddB0_U.+");
+  physics(sns,ADM_UPDATE_beta);
   
   /* update derivatives */
-  update_partial_derivatives(nsns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
+  update_partial_derivatives(sns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
                                       "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
   update_partial_derivatives(ns1,"NS1","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
-  physics(nsns,ADM_UPDATE_AConfIJ);
+  physics(sns,ADM_UPDATE_AConfIJ);
   
   /* update stress energy-tensor */
   Psetd("NS1_Euler_equation_constant",
@@ -212,12 +212,12 @@ static Physics_T *guess_new_physics(void)
   free_grid_char(grid_char);
   
   FUNC_TOC
-  return nsns;
+  return sns;
 }
 
 /* based on grid character, make a new grid for the system. */
 static void 
-  create_new_grid(Grid_Char_T *const grid_char,Physics_T *const nsns)
+  create_new_grid(Grid_Char_T *const grid_char,Physics_T *const sns)
 {
   FUNC_TIC
   
@@ -353,7 +353,7 @@ static void
   make_patches(grid);
   realize_interfaces(grid);
   
-  nsns->grid = grid;
+  sns->grid = grid;
   
   FUNC_TOC
 }
@@ -440,73 +440,73 @@ static void initial_B0I(Physics_T *const phys,
 }
 
 /* loading from checkpoint */
-Physics_T *nsns_read_physics_from_checkpoint(void)
+Physics_T *sns_read_physics_from_checkpoint(void)
 {
   FUNC_TIC
-  Physics_T *const nsns = init_physics(0,NSNS);
+  Physics_T *const sns = init_physics(0,NSNS);
   FILE *file = 0;
   
   /* first load grid and parameters */
-  file = open_checkpoint_file_then_read_grid_and_params(nsns);
+  file = open_checkpoint_file_then_read_grid_and_params(sns);
   
   /* it already hit the stop */
   if (Pgeti(P_"STOP") == 1)
   {
     printf(Pretty0" All iterations have already done.\n");
-    free_physics(nsns);
+    free_physics(sns);
     Fclose(file);
     
     FUNC_TOC
     return 0;
   }
   
-  Physics_T *const ns1 = init_physics(nsns,NS1);
+  Physics_T *const ns1 = init_physics(sns,NS1);
   
   /* make the patches */
-  make_patches(nsns->grid);
+  make_patches(sns->grid);
   
   /* realizing the geometry */
-  realize_interfaces(nsns->grid);
+  realize_interfaces(sns->grid);
   
   /* set parameters, it's important to add paramters 
   // since these call also reposible to set default functions. */
-  physics(nsns,FREE_DATA_SET_PARAMS);
-  physics(nsns,ADM_SET_PARAMS);
-  physics(nsns,SYS_SET_PARAMS);
-  physics(nsns,STRESS_ENERGY_SET_PARAMS);
-  physics(nsns,OBSERVE_SET_PARAMS);  
-  physics(nsns,STAR_SET_PARAMS);
+  physics(sns,FREE_DATA_SET_PARAMS);
+  physics(sns,ADM_SET_PARAMS);
+  physics(sns,SYS_SET_PARAMS);
+  physics(sns,STRESS_ENERGY_SET_PARAMS);
+  physics(sns,OBSERVE_SET_PARAMS);  
+  physics(sns,STAR_SET_PARAMS);
   
   /* now add fields */
-  physics(nsns,ADM_ADD_FIELDS);
-  physics(nsns,FREE_DATA_ADD_FIELDS);
-  physics(nsns,STRESS_ENERGY_ADD_FIELDS);
-  physics(nsns,SYS_ADD_FIELDS);
-  physics(nsns,OBSERVE_ADD_FIELDS);
-  physics(nsns,STAR_ADD_FIELDS);
+  physics(sns,ADM_ADD_FIELDS);
+  physics(sns,FREE_DATA_ADD_FIELDS);
+  physics(sns,STRESS_ENERGY_ADD_FIELDS);
+  physics(sns,SYS_ADD_FIELDS);
+  physics(sns,OBSERVE_ADD_FIELDS);
+  physics(sns,STAR_ADD_FIELDS);
   
   /* populate free data fields */
-  physics(nsns,FREE_DATA_POPULATE);
+  physics(sns,FREE_DATA_POPULATE);
   
   /* then read saved fields in param "checkpoint_save" */
-  read_fields_from_checkpoint_file(nsns,file);
+  read_fields_from_checkpoint_file(sns,file);
   Fclose(file);
   
   /* alse we need NS spin vector */
   star_W_spin_vector_idealfluid_update(ns1,"NS1");
   
   /* beta = B0+B1 */
-  physics(nsns,ADM_UPDATE_B1I);
-  update_partial_derivatives(nsns,".*","^dB0_U.+,^ddB0_U.+");
-  physics(nsns,ADM_UPDATE_beta);
+  physics(sns,ADM_UPDATE_B1I);
+  update_partial_derivatives(sns,".*","^dB0_U.+,^ddB0_U.+");
+  physics(sns,ADM_UPDATE_beta);
   
   /* update derivatives */
-  update_partial_derivatives(nsns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
+  update_partial_derivatives(sns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
                                       "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
   update_partial_derivatives(ns1,"NS1","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
-  physics(nsns,ADM_UPDATE_AConfIJ);
+  physics(sns,ADM_UPDATE_AConfIJ);
   
   /* update matter fields */
   Psets("NS1_enthalpy_neat","yes");
@@ -516,7 +516,7 @@ Physics_T *nsns_read_physics_from_checkpoint(void)
   free_physics(ns1);
 
   FUNC_TOC
-  return nsns;
+  return sns;
 }
 
 /* using copy or interpolation from old physics to 

@@ -4,7 +4,7 @@
 */
 
 
-#include "nsns_header.h"
+#include "sns_header.h"
 
 
 #define add_alloc_get_field(name) ADD_FIELD(name) REALLOC_v_WRITE_v(name)
@@ -17,8 +17,8 @@
  if (_Ind(#name) >= 0) name = patch->fields[Ind(#name)]->v;
 
 
-void nsns_set_evo_fields_generic(Grid_T *const grid);
-void nsns_set_evo_fields_generic(Grid_T *const grid)
+void sns_set_evo_fields_generic(Grid_T *const grid);
+void sns_set_evo_fields_generic(Grid_T *const grid)
 {
   Uint p;
   const Uint np = grid->np;

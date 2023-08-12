@@ -1,5 +1,5 @@
-#ifndef nsns_header_LIB_H
-#define nsns_header_LIB_H
+#ifndef sns_header_LIB_H
+#define sns_header_LIB_H
 
 #include "core_lib.h"
 #include "maths_general_lib.h"
@@ -26,17 +26,17 @@
 // error of undefined parameter. */
 #define P_ "NSNS_"
 
-Physics_T *nsns_initialize_new_physics(Physics_T *const phys);
-void nsns_add_fields(Physics_T *const phys,const char *const region);
-void nsns_print_physical_system_properties(Physics_T *const phys,
+Physics_T *sns_initialize_new_physics(Physics_T *const phys);
+void sns_add_fields(Physics_T *const phys,const char *const region);
+void sns_print_physical_system_properties(Physics_T *const phys,
                                           FILE *const file,
                                           const int iteration,
                                           const int pr_screen);
 
 
-Physics_T *nsns_read_physics_from_checkpoint(void);
-void nsns_analyze(Physics_T *const phys,const int iteration);
-void nsns_solve_equation(Physics_T *const phys);
+Physics_T *sns_read_physics_from_checkpoint(void);
+void sns_analyze(Physics_T *const phys,const int iteration);
+void sns_solve_equation(Physics_T *const phys);
 
 #endif
 
