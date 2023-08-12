@@ -1,6 +1,6 @@
 /*
 // Alireza Rashti
-// January 2023
+// August 2023
 */
 
 /* solving physics equations (elliptic solve) */
