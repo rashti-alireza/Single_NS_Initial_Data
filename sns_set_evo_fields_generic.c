@@ -141,34 +141,34 @@ adm_Kij_D2D2[ijk];
    evo_adm_Kij_D1D2[ijk] = Kdd_D1D2;
    evo_adm_Kij_D2D2[ijk] = Kdd_D2D2;
   }
-  if (IsItCovering(patch,"NS1"))
+  if (IsItCovering(patch,"NS"))
   {
-  Physics_T *ns1 = init_physics(0,NS1);
-  EoS_T *eos     = init_EoS(ns1);
+  Physics_T *ns = init_physics(0,NS);
+  EoS_T *eos    = init_EoS(ns);
   FOR_ALL_ijk
   {
-  double psim4_ns1 =
+  double psim4_ns =
 pow(psi[ijk], -4);
 
-  double grhd_v_ns1_U0 =
-(W_U0[ijk] + psim4_ns1*(dphi_D0[ijk]*igConf_U0U0[ijk] + dphi_D1[ijk]*
+  double grhd_v_ns_U0 =
+(W_U0[ijk] + psim4_ns*(dphi_D0[ijk]*igConf_U0U0[ijk] + dphi_D1[ijk]*
 igConf_U0U1[ijk] + dphi_D2[ijk]*igConf_U0U2[ijk]))/(enthalpy[ijk]*
 evo_alpha[ijk]*u0[ijk]);
 
-  double grhd_v_ns1_U1 =
-(W_U1[ijk] + psim4_ns1*(dphi_D0[ijk]*igConf_U0U1[ijk] + dphi_D1[ijk]*
+  double grhd_v_ns_U1 =
+(W_U1[ijk] + psim4_ns*(dphi_D0[ijk]*igConf_U0U1[ijk] + dphi_D1[ijk]*
 igConf_U1U1[ijk] + dphi_D2[ijk]*igConf_U1U2[ijk]))/(enthalpy[ijk]*
 evo_alpha[ijk]*u0[ijk]);
 
-  double grhd_v_ns1_U2 =
-(W_U2[ijk] + psim4_ns1*(dphi_D0[ijk]*igConf_U0U2[ijk] + dphi_D1[ijk]*
+  double grhd_v_ns_U2 =
+(W_U2[ijk] + psim4_ns*(dphi_D0[ijk]*igConf_U0U2[ijk] + dphi_D1[ijk]*
 igConf_U1U2[ijk] + dphi_D2[ijk]*igConf_U2U2[ijk]))/(enthalpy[ijk]*
 evo_alpha[ijk]*u0[ijk]);
 
 
-  evo_grhd_v_U0[ijk] = grhd_v_ns1_U0;
-  evo_grhd_v_U1[ijk] = grhd_v_ns1_U1;
-  evo_grhd_v_U2[ijk] = grhd_v_ns1_U2;
+  evo_grhd_v_U0[ijk] = grhd_v_ns_U0;
+  evo_grhd_v_U1[ijk] = grhd_v_ns_U1;
+  evo_grhd_v_U2[ijk] = grhd_v_ns_U2;
   eos->h = enthalpy[ijk];
   if(!isfinite(eos->h) || LSSEQL(eos->h,1.))
   {
@@ -183,52 +183,7 @@ evo_alpha[ijk]*u0[ijk]);
    evo_grhd_epsl[ijk] = eos->specific_internal_energy(eos);
   }
   }
-  free_physics(ns1);
-  free_EoS(eos);
-  }
-  else if (IsItCovering(patch,"NS2"))
-  {
-  Physics_T *ns2 = init_physics(0,NS2);
-  EoS_T *eos     = init_EoS(ns2);
-  FOR_ALL_ijk
-  {
-  double psim4_ns2 =
-pow(psi[ijk], -4);
-
-  double grhd_v_ns2_U0 =
-(W_U0[ijk] + psim4_ns2*(dphi_D0[ijk]*igConf_U0U0[ijk] + dphi_D1[ijk]*
-igConf_U0U1[ijk] + dphi_D2[ijk]*igConf_U0U2[ijk]))/(enthalpy[ijk]*
-evo_alpha[ijk]*u0[ijk]);
-
-  double grhd_v_ns2_U1 =
-(W_U1[ijk] + psim4_ns2*(dphi_D0[ijk]*igConf_U0U1[ijk] + dphi_D1[ijk]*
-igConf_U1U1[ijk] + dphi_D2[ijk]*igConf_U1U2[ijk]))/(enthalpy[ijk]*
-evo_alpha[ijk]*u0[ijk]);
-
-  double grhd_v_ns2_U2 =
-(W_U2[ijk] + psim4_ns2*(dphi_D0[ijk]*igConf_U0U2[ijk] + dphi_D1[ijk]*
-igConf_U1U2[ijk] + dphi_D2[ijk]*igConf_U2U2[ijk]))/(enthalpy[ijk]*
-evo_alpha[ijk]*u0[ijk]);
-
-
-  evo_grhd_v_U0[ijk] = grhd_v_ns2_U0;
-  evo_grhd_v_U1[ijk] = grhd_v_ns2_U1;
-  evo_grhd_v_U2[ijk] = grhd_v_ns2_U2;
-  eos->h = enthalpy[ijk];
-  if(!isfinite(eos->h) || LSSEQL(eos->h,1.))
-  {
-    evo_grhd_rho[ijk]  = 0;
-    evo_grhd_p[ijk]    = 0;
-    evo_grhd_epsl[ijk] = 0;
-  }
-  else
-  {
-   evo_grhd_rho[ijk]  = eos->rest_mass_density(eos);
-   evo_grhd_p[ijk]    = eos->pressure(eos);
-   evo_grhd_epsl[ijk] = eos->specific_internal_energy(eos);
-  }
-  }
-  free_physics(ns2);
+  free_physics(ns);
   free_EoS(eos);
   }
   }
