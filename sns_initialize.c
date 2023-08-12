@@ -72,14 +72,10 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   
   Physics_T *const nsns    = init_physics(0,NSNS);/* the whole system */
   Physics_T *const ns1     = init_physics(nsns,NS1);/* NS1 part */
-  Physics_T *const ns2     = init_physics(nsns,NS2);/* NS2 part */
   Physics_T *const old_ns1 = init_physics(old_nsns,NS1);/* NS1 part */
-  Physics_T *const old_ns2 = init_physics(old_nsns,NS2);/* NS2 part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   old_ns1->grid_char = grid_char;
   old_ns1->igc       = Ins1;
-  old_ns2->grid_char = grid_char;
-  old_ns2->igc       = Ins2;
   
   /* update, adjust and tune */
   Psets("NS1_enthalpy_neat","no");
@@ -88,9 +84,6 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   //physics(old_ns1,STRESS_ENERGY_UPDATE);
   
   Psets("NS2_enthalpy_neat","no");
-  //physics(old_ns2,STRESS_ENERGY_UPDATE);
-  physics(old_ns2,STAR_TUNE_EULER_CONST);
-  //physics(old_ns2,STRESS_ENERGY_UPDATE);
   
   physics(old_nsns,SYS_TUNE_P_ADM);
   
@@ -100,16 +93,10 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   physics(old_ns1,STAR_TUNE_CENTER);
   physics(old_ns1,STAR_FIND_SURFACE);
   
-  physics(old_ns2,STRESS_ENERGY_UPDATE);
-  physics(old_ns2,STAR_TUNE_FORCE_BALANCE);
-  physics(old_ns2,STAR_EXTRAPOLATE_MATTERS);
-  physics(old_ns2,STAR_TUNE_CENTER);
-  physics(old_ns2,STAR_FIND_SURFACE);
   
   /* new grid */
   create_new_grid(grid_char,nsns);
   ns1->grid = nsns->grid;
-  ns2->grid = nsns->grid;
   
   /* set and update parameters */
   update_params(nsns);
@@ -144,7 +131,6 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   update_partial_derivatives(nsns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
                                       "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
   update_partial_derivatives(ns1,"NS1","^dphi_D.$,^ddphi_D.D.$");
-  update_partial_derivatives(ns2,"NS2","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
   physics(nsns,ADM_UPDATE_AConfIJ);
@@ -154,13 +140,10 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   physics(ns1,STRESS_ENERGY_UPDATE);
   
   Psets("NS2_enthalpy_neat","yes");
-  physics(ns2,STRESS_ENERGY_UPDATE);
   
   /* free */
   free_physics(ns1);
-  free_physics(ns2);
   free_physics(old_ns1);
-  free_physics(old_ns2);
   free_grid_char(grid_char);
   
   FUNC_TOC
@@ -174,7 +157,6 @@ static Physics_T *guess_new_physics(void)
   
   Physics_T *const nsns = init_physics(0,NSNS);/* the whole system */
   Physics_T *const ns1  = init_physics(nsns,NS1);/* NS part */
-  Physics_T *const ns2  = init_physics(nsns,NS2);/* NS part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   
   /* set parameters */
@@ -188,17 +170,12 @@ static Physics_T *guess_new_physics(void)
   /* create grid */
   ns1->grid_char = grid_char;
   ns1->igc       = Ins1;
-  ns2->grid_char = grid_char;
-  ns2->igc       = Ins2;
 
   physics(ns1,STAR_START);
   physics(ns1,STAR_FIND_SURFACE);
-  physics(ns2,STAR_START);
-  physics(ns2,STAR_FIND_SURFACE);
   
   create_new_grid(grid_char,nsns);
   ns1->grid = nsns->grid;
-  ns2->grid = nsns->grid;
   
   /* add fields */
   physics(nsns,ADM_ADD_FIELDS);
@@ -221,7 +198,6 @@ static Physics_T *guess_new_physics(void)
   update_partial_derivatives(nsns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
                                       "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
   update_partial_derivatives(ns1,"NS1","^dphi_D.$,^ddphi_D.D.$");
-  update_partial_derivatives(ns2,"NS2","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
   physics(nsns,ADM_UPDATE_AConfIJ);
@@ -230,17 +206,14 @@ static Physics_T *guess_new_physics(void)
   Psetd("NS1_Euler_equation_constant",
         star_NS_current_Euler_eq_const(ns1));
   Psetd("NS2_Euler_equation_constant",
-        star_NS_current_Euler_eq_const(ns2));
         
   Psets("NS1_enthalpy_neat","yes");
   physics(ns1,STRESS_ENERGY_UPDATE);
 
   Psets("NS2_enthalpy_neat","yes");
-  physics(ns2,STRESS_ENERGY_UPDATE);
   
   /* free */
   free_physics(ns1);
-  free_physics(ns2);
   free_grid_char(grid_char);
   
   FUNC_TOC
@@ -256,9 +229,7 @@ static void
   /* a new grid */
   Grid_T *const grid = alloc_grid();
   const double ns1_box_len_ratio = 0.2;/* experimentally */
-  const double ns2_box_len_ratio = 0.2;/* experimentally */
   int update_ns1_surface = 1;
-  int update_ns2_surface = 1;
   Uint lmax,n;
   
   /* grid for characters */
@@ -280,7 +251,6 @@ static void
           
   if (Pcmps("grid_NS2_central_box_length","auto"))
     Psetd("grid_NS2_central_box_length",
-          ns2_box_len_ratio*grid_char->params[Ins2]->r_min);
   
   /* separation */
   grid_char->S              = Pgetd("NSNS_separation");
@@ -289,9 +259,6 @@ static void
   grid_char->params[Ins1]->w = Pgetd("grid_NS1_central_box_length");
   grid_char->params[Ins1]->h = Pgetd("grid_NS1_central_box_length");
   /* NS2 */
-  grid_char->params[Ins2]->l = Pgetd("grid_NS2_central_box_length");
-  grid_char->params[Ins2]->w = Pgetd("grid_NS2_central_box_length");
-  grid_char->params[Ins2]->h = Pgetd("grid_NS2_central_box_length");
     
   /* save the values for a rainy day */
   if (Pgeti("NS1_did_NS_surface_finder_work?"))
@@ -359,7 +326,6 @@ static void
         PgetddEZ("NS2_surface_R|realClm")  && 
         PgetddEZ("NS2_surface_R|imagClm")  &&
         /* if the old and new have the same lmax */
-        PgetiEZ("NS2_surface_R|lmax") == (int)grid_char->params[Ins2]->lmax
        )
     {
       lmax = (Uint)Pgeti("NS2_surface_R|lmax");
@@ -367,27 +333,17 @@ static void
       const double *realClm = Pgetdd("NS2_surface_R|realClm");
       const double *imagClm = Pgetdd("NS2_surface_R|imagClm");
       /* diff between old and new */
-      double dreal = L2_norm(n,realClm,grid_char->params[Ins2]->relClm);
-      double dimag = L2_norm(n,imagClm,grid_char->params[Ins2]->imgClm);
       /* relative change df/f */
       rel_change = (dreal+dimag) /
                    (L2_norm(n,realClm,0)+L2_norm(n,imagClm,0));
     
       /* update if change greater than prescribed */
       if (rel_change > Pgetd("NS2_surface_change_threshold"))
-        update_ns2_surface = 1;
       else
-        update_ns2_surface = 0;
     }
-    /* save new values if ns2 surface must change */
-    if (update_ns2_surface)
     {
-      n = Ncoeffs_Ylm(grid_char->params[Ins2]->lmax);
       update_parameter_array("NS2_surface_R|realClm",
-                             grid_char->params[Ins2]->relClm,n);
       update_parameter_array("NS2_surface_R|imagClm",
-                             grid_char->params[Ins2]->imgClm,n);
-      Pseti("NS2_surface_R|lmax",(int)grid_char->params[Ins2]->lmax);
       Pseti("NS2_did_NS_surface_change?",1);
     }
     else
@@ -412,9 +368,6 @@ static void
     Error0("NS1 central box is too big!");
   
   /* check central box length */
-  if (grid_char->params[Ins2]->l > grid_char->params[Ins2]->r_min/2. ||
-      grid_char->params[Ins2]->w > grid_char->params[Ins2]->r_min/2. ||
-      grid_char->params[Ins2]->h > grid_char->params[Ins2]->r_min/2.)
     Error0("NS2 central box is too big!");
   
   set_params_of_split_cubed_spherical_grid(grid_char);
@@ -530,7 +483,6 @@ Physics_T *nsns_read_physics_from_checkpoint(void)
   }
   
   Physics_T *const ns1 = init_physics(nsns,NS1);
-  Physics_T *const ns2 = init_physics(nsns,NS2);
   
   /* make the patches */
   make_patches(nsns->grid);
@@ -564,7 +516,6 @@ Physics_T *nsns_read_physics_from_checkpoint(void)
   
   /* alse we need NS spin vector */
   star_W_spin_vector_idealfluid_update(ns1,"NS1");
-  star_W_spin_vector_idealfluid_update(ns2,"NS2");
   
   /* beta = B0+B1 */
   physics(nsns,ADM_UPDATE_B1I);
@@ -575,7 +526,6 @@ Physics_T *nsns_read_physics_from_checkpoint(void)
   update_partial_derivatives(nsns,".*","^dpsi_D.$,^ddpsi_D.D.$,"
                                       "^dalphaPsi_D.$,^ddalphaPsi_D.D.$");
   update_partial_derivatives(ns1,"NS1","^dphi_D.$,^ddphi_D.D.$");
-  update_partial_derivatives(ns2,"NS2","^dphi_D.$,^ddphi_D.D.$");
   
   /* update AConf^{ij} */
   physics(nsns,ADM_UPDATE_AConfIJ);
@@ -585,10 +535,8 @@ Physics_T *nsns_read_physics_from_checkpoint(void)
   physics(ns1,STRESS_ENERGY_UPDATE);
 
   Psets("NS2_enthalpy_neat","yes");
-  physics(ns2,STRESS_ENERGY_UPDATE);
   
   free_physics(ns1);
-  free_physics(ns2);
 
   FUNC_TOC
   return nsns;
@@ -603,15 +551,12 @@ static void initialize_fields_using_previous_solve
   
   Physics_T *const old_ns1 = init_physics(old_phys,NS1);
   Physics_T *const new_ns1 = init_physics(new_phys,NS1);
-  Physics_T *const old_ns2 = init_physics(old_phys,NS2);
-  Physics_T *const new_ns2 = init_physics(new_phys,NS2);
   
   /* matter fields */
   interpolate_fields_from_old_grid_to_new_grid
     (mygrid(old_ns1,"NS1,NS1_around_IB"),mygrid(new_ns1,"NS1"),"phi,enthalpy",0);
   
   interpolate_fields_from_old_grid_to_new_grid
-    (mygrid(old_ns2,"NS2,NS2_around_IB"),mygrid(new_ns2,"NS2"),"phi,enthalpy",0);
   
   /* if resolution changed */
   if(Pgeti(P_"did_resolution_change?"))
@@ -641,7 +586,6 @@ static void initialize_fields_using_previous_solve
       region1 = "NS2,NS2_around";
       region2 = "NS2,NS2_around";
       interpolate_fields_from_old_grid_to_new_grid
-        (mygrid(old_ns2,region1),mygrid(new_ns2,region2),
          "psi,alphaPsi,B0_U0,B0_U1,B0_U2",0);
          
     }
@@ -651,12 +595,9 @@ static void initialize_fields_using_previous_solve
   
   /* alse we need NS spin vector */
   star_W_spin_vector_idealfluid_update(new_ns1,"NS1");
-  star_W_spin_vector_idealfluid_update(new_ns2,"NS2");
   
   free_physics(old_ns1);
   free_physics(new_ns1);
-  free_physics(old_ns2);
-  free_physics(new_ns2);
   
   FUNC_TOC
 }
@@ -685,8 +626,6 @@ static void move_jacobian
   
   Physics_T *const old_ns1 = init_physics(old_phys,NS1);
   Physics_T *const new_ns1 = init_physics(new_phys,NS1);
-  Physics_T *const old_ns2 = init_physics(old_phys,NS2);
-  Physics_T *const new_ns2 = init_physics(new_phys,NS2);
   Grid_T *gnew = 0;
   Grid_T *gold = 0;
   const char *name1 = 0;
@@ -735,8 +674,6 @@ static void move_jacobian
     /* move Jacobian of NS2 and NS2 around */
     if (!Pgeti("NS2_did_NS_surface_change?"))
     {
-      gnew = mygrid(new_ns2,"NS2,NS2_around");
-      gold = mygrid(old_ns2,"NS2,NS2_around");
       
       FOR_ALL_p(gnew->np)
       {
@@ -761,8 +698,6 @@ static void move_jacobian
   
   free_physics(old_ns1);
   free_physics(new_ns1);
-  free_physics(old_ns2);
-  free_physics(new_ns2);
 
   FUNC_TOC
 }

@@ -3,8 +3,6 @@
 
 /* index of ns1 */
 #define Ins1 (0)
-/* index of ns2 */
-#define Ins2 (1)
 
 /* encapsulate these lines for multiple uses, N arg value can take 1 and 2 */
 #define USE_LAST_NS_SURFACE(N) \

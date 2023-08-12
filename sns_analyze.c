@@ -53,7 +53,6 @@ void nsns_print_physical_system_properties(Physics_T *const phys,
                                           const int pr_screen)
 {
   Physics_T *const ns1 = init_physics(phys,NS1);
-  Physics_T *const ns2 = init_physics(phys,NS2);
 
   if (pr_screen)
   {
@@ -64,11 +63,9 @@ void nsns_print_physical_system_properties(Physics_T *const phys,
   fprintf(file,"\n");
   
   star_print_properties(ns1,Pgets(P_"NS1_properties"),file,pr_screen);
-  star_print_properties(ns2,Pgets(P_"NS2_properties"),file,pr_screen);
   sys_print_properties(phys,Pgets(P_"NSNS_properties"),file,pr_screen);
   
   free_physics(ns1);
-  free_physics(ns2);
 }
 
 /* compute variety of properties.
@@ -78,7 +75,6 @@ void nsns_print_physical_system_properties(Physics_T *const phys,
 static void compute_properties(Physics_T *const phys/* nsns */)
 {
   Physics_T *const ns1 = init_physics(phys,NS1);
-  Physics_T *const ns2 = init_physics(phys,NS2);
   TOV_T *tov        = 0;
   
   const double x_CM = Pgetd(P_"x_CM");
@@ -143,18 +139,14 @@ static void compute_properties(Physics_T *const phys/* nsns */)
   Psetd("NS1_chi_z",s[2]/Pow2(m));
   
   /* NS2: */
-  observe(ns2,"ADM(M)",Pgets("NS2_Observe_ADM_M"),&m);
   Psetd("NS2_ADM_mass",m);
   
-  observe(ns2,"Komar(M)",Pgets("NS2_Observe_Komar_M"),&m);
   Psetd("NS2_Komar_mass",m);
   
-  observe(ns2,"Baryonic(M)",Pgets("NS2_Observe_baryonic_M"),&m);
   Psetd("NS2_baryonic_mass_current",m);
   
   tov = TOV_init();
   tov->exit_if_error = 0;
-  tov->phys  = ns2;
   tov->bar_m = Pgetd("NS2_baryonic_mass_current");
   tov = TOV_solution(tov);
   if (tov->status == 0)
@@ -167,24 +159,19 @@ static void compute_properties(Physics_T *const phys/* nsns */)
   }
   TOV_free(tov);
   
-  Psetd("NS2_mass_shedding_indicator",star_NS_mass_shedding_indicator(ns2));
   
-  observe(ns2,"CM",Pgets("NS2_Observe_CM"),cm);
   Psetd("NS2_x_CM",cm[0]+x_CM);
   Psetd("NS2_y_CM",cm[1]+y_CM);
   Psetd("NS2_z_CM",cm[2]+z_CM);
 
-  observe(ns2,"ADM(P)",Pgets("NS2_Observe_ADM_P"),p);
   Psetd("NS2_Px_ADM",p[0]);
   Psetd("NS2_Py_ADM",p[1]);
   Psetd("NS2_Pz_ADM",p[2]);
 
-  observe(ns2,"ADM(J)",Pgets("NS2_Observe_ADM_J"),j);
   Psetd("NS2_Jx_ADM",j[0]);
   Psetd("NS2_Jy_ADM",j[1]);
   Psetd("NS2_Jz_ADM",j[2]);
   
-  observe(ns2,"spin",Pgets("NS2_Observe_spin"),s);
   Psetd("NS2_Spin_x",s[0]);
   Psetd("NS2_Spin_y",s[1]);
   Psetd("NS2_Spin_z",s[2]);
@@ -240,5 +227,4 @@ static void compute_properties(Physics_T *const phys/* nsns */)
   }
   
   free_physics(ns1);
-  free_physics(ns2);
 }
