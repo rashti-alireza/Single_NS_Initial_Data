@@ -3,7 +3,7 @@
 // August 2023
 */
 
-/* various functions needed to make a physics object for NS-NS */
+/* various functions needed to make a physics object for SNS */
 
 
 #include "sns_initialize.h"

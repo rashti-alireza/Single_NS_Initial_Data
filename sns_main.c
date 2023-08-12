@@ -5,8 +5,7 @@
 
 #include "sns_main.h"
 
-
-/* initial data for NS-NS binary system */
+/* initial data for SNS binary system */
 int Single_NS_Initial_Data(void *vp)
 {
   /* if this is a generic ID reader call */
@@ -100,16 +99,16 @@ static void set_default_parameters(void)
   Pset_default("solve_ddm_schur_thread_cap","1");
   
   
-  /* NS-NS parameters:
+  /* SNS parameters:
   // ================== */
  
-  /* how far are NS-NS */
+  /* how far are SNS */
   Pset_default(P_"separation","50.");
   
-  /* how fast NS-NS angular velocity */
+  /* how fast SNS angular velocity */
   Pset_default(P_"angular_velocity","0.");
   
-  /* how fast NS-NS infall velocity */
+  /* how fast SNS infall velocity */
   Pset_default(P_"infall_velocity","0.");
  
   /* how to start off:
@@ -130,7 +129,7 @@ static void set_default_parameters(void)
   Pset_default(P_"y_CM","0."); 
   Pset_default(P_"z_CM","0."); 
   
-  /* boost velocity for NS-NS */
+  /* boost velocity for SNS */
   Pset_default(P_"boost_Vx","0."); 
   Pset_default(P_"boost_Vy","0."); 
   Pset_default(P_"boost_Vz","0."); 
