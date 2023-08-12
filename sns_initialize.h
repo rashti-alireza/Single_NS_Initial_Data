@@ -1,32 +1,32 @@
 #include "sns_header.h"
 #include "maths_equation_solvings_lib.h"
 
-/* index of ns1 */
-#define Ins1 (0)
+/* index of ns */
+#define Ins (0)
 
-/* encapsulate these lines for multiple uses, N arg value can take 1 and 2 */
-#define USE_LAST_NS_SURFACE(N) \
-  printf(Pretty0"Using the last NS"#N" surface.\n");\
-  lmax = (Uint)Pgeti("NS"#N"_surface_R|lmax");\
+/* encapsulate use last NS surface for multiple uses */
+#define USE_LAST_NS_SURFACE() \
+  printf(Pretty0"Using the last NS surface.\n");\
+  lmax = (Uint)Pgeti("NS_surface_R|lmax");\
   n    = Ncoeffs_Ylm(lmax);\
   double *realClm = alloc_ClmYlm(lmax);/* freed in free_grid_char */\
   double *imagClm = alloc_ClmYlm(lmax);/* freed in free_grid_char */\
   double *coeffs  = 0;\
-  coeffs = Pgetdd("NS"#N"_surface_R|realClm");\
+  coeffs = Pgetdd("NS_surface_R|realClm");\
   for (Uint ij = 0; ij < n; ++ij)\
     realClm[ij] = coeffs[ij];\
-  coeffs = Pgetdd("NS"#N"_surface_R|imagClm");\
+  coeffs = Pgetdd("NS_surface_R|imagClm");\
   for (Uint ij = 0; ij < n; ++ij)\
     imagClm[ij] = coeffs[ij];\
   /* might already have values so free them. */\
-  Free(grid_char->params[Ins##N]->relClm);\
-  Free(grid_char->params[Ins##N]->imgClm);\
-  grid_char->params[Ins##N]->relClm = realClm;\
-  grid_char->params[Ins##N]->imgClm = imagClm;\
-  grid_char->params[Ins##N]->lmax   = lmax;\
-  grid_char->params[Ins##N]->r_min  = Pgetd("NS"#N"_min_radius");\
-  grid_char->params[Ins##N]->r_max  = Pgetd("NS"#N"_max_radius");\
-  Pseti("NS"#N"_did_NS_surface_change?",0);
+  Free(grid_char->params[Ins]->relClm);\
+  Free(grid_char->params[Ins]->imgClm);\
+  grid_char->params[Ins]->relClm = realClm;\
+  grid_char->params[Ins]->imgClm = imagClm;\
+  grid_char->params[Ins]->lmax   = lmax;\
+  grid_char->params[Ins]->r_min  = Pgetd("NS_min_radius");\
+  grid_char->params[Ins]->r_max  = Pgetd("NS_max_radius");\
+  Pseti("NS_did_NS_surface_change?",0);
 
 
 Physics_T *sns_initialize_new_physics(Physics_T *const old_phys);
