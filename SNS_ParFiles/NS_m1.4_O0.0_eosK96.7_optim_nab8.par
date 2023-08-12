@@ -7,8 +7,8 @@ Project = Single_NS_initial_data
 
 #### SNS binary:
 SNS_start_off                   = parameter_file
-SNS_observe_ADM_P               = S_obj1+S_obj2,default
-SNS_observe_ADM_J               = S_obj1+S_obj2,default
+SNS_observe_ADM_P               = S_inf,default
+SNS_observe_ADM_J               = S_inf,default
 
 #SNS_P_ADM_control_method        = adjust(x_CM,y_CM)
 #SNS_P_ADM_control_update_weight = 0.(x10)->0.2
