@@ -129,10 +129,10 @@ static void set_default_parameters(void)
   Pset_default(P_"y_CM","0."); 
   Pset_default(P_"z_CM","0."); 
   
-  //!/* boost velocity for SNS */
-  //!Pset_default(P_"boost_Vx","0."); 
-  //!Pset_default(P_"boost_Vy","0."); 
-  //!Pset_default(P_"boost_Vz","0."); 
+  /* boost velocity for SNS, needed for beta's eqs. */
+  Pset_default(P_"boost_Vx","0."); 
+  Pset_default(P_"boost_Vy","0."); 
+  Pset_default(P_"boost_Vz","0."); 
   
   /* masses */
   Pset_default(P_"ADM_mass","1.");
