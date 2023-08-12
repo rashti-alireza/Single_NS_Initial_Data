@@ -158,7 +158,7 @@ static void compute_properties(Physics_T *const phys/* sns */)
   
   
   
-  /* NSNS: */
+  /* SNS: */
   observe(phys,"ADM(M)",Pgets(P_"Observe_ADM_M"),&m);
   Psetd(P_"adm_mass",m);
   

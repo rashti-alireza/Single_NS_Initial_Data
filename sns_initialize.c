@@ -70,7 +70,7 @@ static Physics_T *infer_new_physics(Physics_T *const old_nsns)
   
   FUNC_TIC
   
-  Physics_T *const sns    = init_physics(0,NSNS);/* the whole system */
+  Physics_T *const sns    = init_physics(0,SNS);/* the whole system */
   Physics_T *const ns1     = init_physics(sns,NS1);/* NS1 part */
   Physics_T *const old_ns1 = init_physics(old_nsns,NS1);/* NS1 part */
   Grid_Char_T *const grid_char = init_grid_char(0);
@@ -152,7 +152,7 @@ static Physics_T *guess_new_physics(void)
 {
   FUNC_TIC
   
-  Physics_T *const sns = init_physics(0,NSNS);/* the whole system */
+  Physics_T *const sns = init_physics(0,SNS);/* the whole system */
   Physics_T *const ns1  = init_physics(sns,NS1);/* NS part */
   Grid_Char_T *const grid_char = init_grid_char(0);
   
@@ -443,7 +443,7 @@ static void initial_B0I(Physics_T *const phys,
 Physics_T *sns_read_physics_from_checkpoint(void)
 {
   FUNC_TIC
-  Physics_T *const sns = init_physics(0,NSNS);
+  Physics_T *const sns = init_physics(0,SNS);
   FILE *file = 0;
   
   /* first load grid and parameters */
