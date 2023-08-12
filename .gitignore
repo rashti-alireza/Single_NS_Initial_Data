@@ -1,0 +1,6 @@
+## ignore submakes
+makefile
+.sub_makefile
+
+## joe's
+DEADJOE
