@@ -24,7 +24,7 @@
 // that some parameters when are read in various parts of physics 
 // libraries assume this consistency otherwise it might get 
 // error of undefined parameter. */
-#define P_ "NSNS_"
+#define P_ "SNS_"
 
 Physics_T *sns_initialize_new_physics(Physics_T *const phys);
 void sns_add_fields(Physics_T *const phys,const char *const region);

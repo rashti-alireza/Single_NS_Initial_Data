@@ -140,7 +140,7 @@ static void set_default_parameters(void)
   Pset_default(P_"Komar_mass","1.");
   
   /* what to print for properties of SNS, add and separate with comma */
-  Pset_default(P_"NSNS_properties",
+  Pset_default(P_"SNS_properties",
     "separation,x_CM,y_CM,z_CM,ADM_mass,Komar_mass,mass_ratio,"
     "angular_velocity,infall_velocity,"
     "Px_ADM,Py_ADM,Pz_ADM,"

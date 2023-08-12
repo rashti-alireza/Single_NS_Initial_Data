@@ -6,15 +6,15 @@
 Project = NS_NS_binary_initial_data
 
 #### NS-NS binary:
-NSNS_separation                  = 50.
-NSNS_angular_velocity            = auto
-NSNS_start_off                   = parameter_file
-NSNS_observe_ADM_P               = S_obj1+S_obj2,default
-NSNS_observe_ADM_J               = S_obj1+S_obj2,default
-NSNS_P_ADM_control_method        = adjust(x_CM,y_CM)
-NSNS_P_ADM_control_update_weight = 0.(x10)->0.2
-NSNS_P_ADM_control_tolerance     = 1E-8
-NSNS_P_ADM_control_threshold     = 10
+SNS_separation                  = 50.
+SNS_angular_velocity            = auto
+SNS_start_off                   = parameter_file
+SNS_observe_ADM_P               = S_obj1+S_obj2,default
+SNS_observe_ADM_J               = S_obj1+S_obj2,default
+SNS_P_ADM_control_method        = adjust(x_CM,y_CM)
+SNS_P_ADM_control_update_weight = 0.(x10)->0.2
+SNS_P_ADM_control_tolerance     = 1E-8
+SNS_P_ADM_control_threshold     = 10
 
 
 #### NS1:

@@ -31,7 +31,7 @@ Physics_T *sns_initialize_new_physics(Physics_T *const old_phys)
     /* if we wanna use a particular checkpoint file, 
     // mostly for debug purposes, set:
     // set:
-    // NSNS_start_off       = checkpoint_file
+    // SNS_start_off       = checkpoint_file
     // checkpoint_file_path = path_to_checkpoint_file */
     if (Pcmps(P_"start_off","checkpoint_file"))
     {
@@ -245,7 +245,7 @@ static void
           
   
   /* separation */
-  grid_char->S              = Pgetd("NSNS_separation");
+  grid_char->S              = Pgetd("SNS_separation");
   /* NS1 */
   grid_char->params[Ins1]->l = Pgetd("grid_NS1_central_box_length");
   grid_char->params[Ins1]->w = Pgetd("grid_NS1_central_box_length");

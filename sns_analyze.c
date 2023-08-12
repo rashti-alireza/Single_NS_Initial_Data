@@ -63,7 +63,7 @@ void sns_print_physical_system_properties(Physics_T *const phys,
   fprintf(file,"\n");
   
   star_print_properties(ns1,Pgets(P_"NS1_properties"),file,pr_screen);
-  sys_print_properties(phys,Pgets(P_"NSNS_properties"),file,pr_screen);
+  sys_print_properties(phys,Pgets(P_"SNS_properties"),file,pr_screen);
   
   free_physics(ns1);
 }
