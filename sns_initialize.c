@@ -218,6 +218,8 @@ static void
   /* a new grid */
   Grid_T *const grid = alloc_grid();
   const double ns_box_len_ratio = 0.2;/* experimentally */
+  const double ns_around_len_ratio = 3.0;
+  
   int update_ns_surface = 1;
   Uint lmax,n;
   
@@ -236,6 +238,10 @@ static void
   if (Pcmps("grid_central_box_length","auto"))
     Psetd("grid_central_box_length",
           ns_box_len_ratio*grid_char->params[Ins]->r_min);
+  
+  if (Pcmps("grid_around_box_length","auto"))
+    Psetd("grid_around_box_length",
+          ns_around_len_ratio*grid_char->params[Ins]->r_min);
           
   grid_char->S              = Pgetd("grid_around_box_length");
   grid_char->params[Ins]->l = Pgetd("grid_central_box_length");
