@@ -75,7 +75,7 @@ void sns_print_physical_system_properties(Physics_T *const phys,
 static void compute_properties(Physics_T *const phys/* sns */)
 {
   Physics_T *const ns = init_physics(phys,NS);
-  TOV_T *tov        = 0;
+  TOV_T *tov          = 0;
   
   const double x_CM = Pgetd(P_"x_CM");
   const double y_CM = Pgetd(P_"y_CM");
