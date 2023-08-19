@@ -313,14 +313,4 @@ static void set_default_parameters(void)
   Pset_default("NS_RootFinder_Iteration","1000");
   Pset_default("NS_RootFinder_verbose","no");
   
-  //!/* use Kepler's law to set angular velocity */
-  //!if (Pcmps(P_"angular_velocity","auto"))
-  //!{
-  //!  const double m1 = Pgetd("NS_baryonic_mass");
-  //!  
-  //!  const double r  = Pgetd(P_"separation");
-  //!  const double O  = sqrt((m1+m2)/pow(r,3.));
-  //!
-  //!  Psetd(P_"angular_velocity",O);
-  //!}
 }
