@@ -102,15 +102,9 @@ static void set_default_parameters(void)
   /* SNS parameters:
   // ================== */
  
-  //!/* how far are SNS */
-  //!Pset_default(P_"separation","0.");
-  
   /* how fast SNS angular velocity, we need this for phi initialization */
   Pset_default(P_"angular_velocity","0.");
   
-  //!/* how fast SNS infall velocity */
-  //!Pset_default(P_"infall_velocity","0.");
- 
   /* how to start off:
   // options:
   // "parameter_file" : it reads parameter file and initialize.
@@ -145,13 +139,6 @@ static void set_default_parameters(void)
     "Jx_ADM,Jy_ADM,Jz_ADM,"
     "Virial_error");
     
-  //!/* how to tune P_ADM:
-  //!// options:[none,adjust(?_CM)], cf. */
-  //!Pset_default(P_"P_ADM_control_method","adjust(x_CM,y_CM)");
-  //!Pset_default(P_"P_ADM_control_update_weight","0.");
-  //!Pset_default(P_"P_ADM_control_tolerance","1E-5");
-  //!Pset_default(P_"P_ADM_control_threshold","1E-1");
-  
   /* observer method */
   Pset_default(P_"Observe_ADM_P","S+V,constraint");
   Pset_default(P_"Observe_ADM_J","S+V,constraint");
@@ -284,8 +271,6 @@ static void set_default_parameters(void)
   
   /* tune and adjust: */
   /* for option cf star_main */
-  //!Pset_default("NS_force_balance_equation","adjust(d/dy:Omega)");
-  //!Pset_default("NS_force_balance_update_weight","0.");
   Pset_default("NS_adjust_center_method","Taylor_expansion");
   Pset_default("NS_adjust_center_update_weight","0.");
   Pset_default("NS_enthalpy_allowed_residual","1E-8");
