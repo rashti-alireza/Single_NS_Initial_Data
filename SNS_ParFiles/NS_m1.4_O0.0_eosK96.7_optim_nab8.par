@@ -10,12 +10,6 @@ SNS_start_off                   = parameter_file
 SNS_observe_ADM_P               = S_inf,default
 SNS_observe_ADM_J               = S_inf,default
 
-#SNS_P_ADM_control_method        = adjust(x_CM,y_CM)
-#SNS_P_ADM_control_update_weight = 0.(x10)->0.2
-#SNS_P_ADM_control_tolerance     = 1E-8
-#SNS_P_ADM_control_threshold     = 10
-
-
 #### NS:
 NS_baryonic_mass               = 1.4
 NS_EoS_description             = K96
@@ -26,7 +20,6 @@ NS_EoS_Gamma                   = [2]
 NS_Omega_x             	       = 0.
 NS_Omega_y                     = 0.
 NS_Omega_z                     = 0.
-
 NS_surface_type                = perfect_s2->topology_s2
 NS_surface_finder              = bisection
 NS_surface_change_threshold    = 0.0
