@@ -240,7 +240,6 @@ static void
     Psetd("grid_central_box_length",
           ns_box_len_ratio*grid_char->params[Ins]->r_min);
           
-  // TODO: does the following make sense?
   grid_char->S              = Pgetd("grid_around_box_length");
   grid_char->params[Ins]->l = Pgetd("grid_central_box_length");
   grid_char->params[Ins]->w = Pgetd("grid_central_box_length");
@@ -344,7 +343,6 @@ static void update_partial_derivatives(Physics_T *const phys,
 }
 
 /* initial B0^i in beta = B0+B1 */
-// TODO: does it make sense?
 static void initial_B0I(Physics_T *const phys,
                        const char *const region)
 {
@@ -389,7 +387,7 @@ static void initial_B0I(Physics_T *const phys,
         DEF_RELATIVE_z
         DEF_RELATIVE_r
         
-        psi[ijk]   /= r;
+        // psi[ijk]   /= r; no longer needed as it uses TOV 
         B0_U0[ijk] /= r;
         B0_U1[ijk] /= r;
         B0_U2[ijk] /= r;
@@ -482,7 +480,6 @@ Physics_T *sns_read_physics_from_checkpoint(void)
 
 /* using copy or interpolation from old physics to 
 // initialize fields for new physics */
-// TODO double check
 static void initialize_fields_using_previous_solve
             (Physics_T *const new_phys,Physics_T *const old_phys)
 {
