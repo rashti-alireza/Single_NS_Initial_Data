@@ -83,10 +83,7 @@ static Physics_T *infer_new_physics(Physics_T *const old_sns)
   physics(old_ns,STAR_TUNE_EULER_CONST);
   //physics(old_ns,STRESS_ENERGY_UPDATE);
   
-  //!physics(old_sns,SYS_TUNE_P_ADM);
-  
   physics(old_ns,STRESS_ENERGY_UPDATE);
-  //!physics(old_ns,STAR_TUNE_FORCE_BALANCE);
   physics(old_ns,STAR_EXTRAPOLATE_MATTERS);
   physics(old_ns,STAR_TUNE_CENTER);
   physics(old_ns,STAR_FIND_SURFACE);
