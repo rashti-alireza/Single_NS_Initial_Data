@@ -119,6 +119,8 @@ Eq_update_weight_B0_U1          = 0.2
 Eq_update_weight_B0_U2          = 0.2
 
 #### solve settings:
+## note we need to solve for beta as Eq(bete) = S( j(phi,NS_Omega) ).
+## note we need to solve for phi  as Eq(phi)  = S( beta,NS_omega ).
 solve_Order                     = phi,psi,alphaPsi,B0_U0,B0_U1,B0_U2
 solve_Newton_Update_Weight      = 1.
 solve_residual                  = 1E-10
