@@ -79,9 +79,9 @@ grid_outermost_radius         = 1E5
 grid_verbose                  = no
 
 #### resolutions:
-n_a = 8(x80) ->10(x60)->12(x50)->14(x50)->16(x50)#->18(x50)->20(x50)->22(x40)
-n_b = 8(x80) ->10(x60)->12(x50)->14(x50)->16(x50)#->18(x50)->20(x50)->22(x40)
-n_c = 12(x80)->14(x60)->16(x50)->18(x50)->20(x50)#->22(x50)->24(x50)->26(x40)
+n_a = 8(x60) ->10(x30)->12(x30)->14(x30)->16(x30)#->18(x30)->20(x30)->22(x30)
+n_b = 8(x60) ->10(x30)->12(x30)->14(x30)->16(x30)#->18(x30)->20(x30)->22(x30)
+n_c = 12(x60)->14(x30)->16(x30)->18(x30)->20(x30)#->22(x30)->24(x30)->26(x30)
 
 grid_SplitCS_max_n_a         = 40
 grid_SplitCS_max_n_b         = 40
@@ -130,17 +130,17 @@ solve_UMFPACK_size              = 1
 txt_output_0d  = ham,mom,eq_residual
 
 #txt_output_1d  = ^phi, ^psi, ^alphaPsi, ^B0, ^beta, eq_residual,\
-#	         ham, mom, enthalpy, rho0, ^drho0_D.,\
-#		 d+phi_D.+, d+psi_D.+, d+alphaPsi_D.+, d+B._U.D.+
+#  ham, mom, enthalpy, rho0, ^drho0_D.,\
+#  d+phi_D.+, d+psi_D.+, d+alphaPsi_D.+, d+B._U.D.+
 
 ## lines separated with ',' and the fix values take place in [0,1]x[0,1]
 #txt_output_1d_line = (X,0.5,0.5),(0.5,Y,0.5),(0.5,0.5,Z)
 
 #silo_output_3d = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
-#                 ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
-#                 enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
-#                 drho0_D0,drho0_D1,drho0_D2,\
-#	         (B0_U0,B0_U1,B0_U2),(beta_U0,beta_U1,beta_U2)
+#  ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
+#  enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
+#  drho0_D0,drho0_D1,drho0_D2,\
+#  (B0_U0,B0_U1,B0_U2),(beta_U0,beta_U1,beta_U2)
 
 #-----------------------------------------------------------------------#
 # The End                                                               #
