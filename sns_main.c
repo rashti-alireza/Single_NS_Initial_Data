@@ -264,6 +264,7 @@ static void set_default_parameters(void)
   Pset_default("NS_Observe_ADM_P","S_obj,default");
   Pset_default("NS_Observe_ADM_J","S_obj,default");
   Pset_default("NS_Observe_CM","V_obj,default");
+  /* TODO: is it the best method for spin? */
   Pset_default("NS_Observe_spin","S_obj,JRP");
   
   /* smooth and polish phi equation close to the surface */
