@@ -6,9 +6,7 @@
 Project = Single_NS_initial_data
 
 #### SNS binary:
-SNS_start_off                   = parameter_file
-SNS_observe_ADM_P               = S_inf,default
-SNS_observe_ADM_J               = S_inf,default
+SNS_start_off                  = parameter_file
 
 #### NS:
 NS_baryonic_mass               = 1.4
