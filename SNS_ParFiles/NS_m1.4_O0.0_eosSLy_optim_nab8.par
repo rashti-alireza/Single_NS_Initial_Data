@@ -10,12 +10,13 @@ SNS_start_off                  = parameter_file
 
 #### NS:
 NS_baryonic_mass               = 1.4
-NS_EoS_description             = K96
-NS_EoS_type                    = polytropic
+NS_EoS_description             = SLy
+NS_EoS_type                    = piecewise_polytropic
 NS_EoS_unit                    = geo
-NS_EoS_K0                      = [96.7]
-NS_EoS_Gamma                   = [2]
-NS_Omega_x             	       = 0.
+NS_EoS_K0                      = [8.95133496e-02]
+NS_EoS_rho0_th                 = [0.00000000e+00,2.36719491e-04,8.11322219e-04,1.61880065e-03]
+NS_EoS_Gamma                   = [1.35692395e+00,3.00500000e+00,2.98800000e+00,2.85100000e+00]
+NS_Omega_x                     = 0.
 NS_Omega_y                     = 0.
 NS_Omega_z                     = 0.
 NS_surface_type                = perfect_s2->topology_s2
@@ -61,8 +62,8 @@ checkpoint_every = 0h
 #### basics:
 Derivative_Method               = Spectral
 Interpolation_Method            = Spectral
-Fourier_Transformation_Method   = RFT
-dF/du_for_Newton_Method         = Spectral
+Fourier_Transformation_Method   = RFT 
+dF/du_for_Newton_Method         = Spectral 
 
 #-----------------------------------------------------------------------#
 # Grid and Geometry:                                                    #
