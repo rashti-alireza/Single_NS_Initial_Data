@@ -405,6 +405,11 @@ static void initial_B0I(Physics_T *const phys,
 Physics_T *sns_read_physics_from_checkpoint(void)
 {
   FUNC_TIC
+
+  /* ad-hoc param to init physics and prevent error. 
+  // later it is replaced by the checkpoint value. */  
+  Pset_default("grid_set_NS","center");
+  
   Physics_T *const sns = init_physics(0,SNS);
   FILE *file = 0;
   
