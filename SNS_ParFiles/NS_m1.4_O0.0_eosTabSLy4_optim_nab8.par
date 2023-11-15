@@ -1,0 +1,152 @@
+#-----------------------------------------------------------------------#
+# Physics:                                                              #
+#-----------------------------------------------------------------------#
+#### Project:
+Project = Single_NS_initial_data
+
+#### SNS binary:
+SNS_start_off               = parameter_file
+
+#### NS:
+NS_baryonic_mass            = 1.4
+NS_EoS_description          = SLy4
+NS_EoS_type                 = tabular
+NS_EoS_unit                 = geo
+NS_EoS_table_path           = /path/to/SLy4/tab ## you can find it in EoS module
+NS_EoS_table_format         = rest_mass_density,specific_internal_energy,pressure
+NS_EoS_interpolation_method = Hermite1D
+NS_EoS_interpolation_use_log= yes
+NS_EoS_Hermite1D_FD_accuracy= 3
+NS_EoS_Hermite1D_num_points = 2
+NS_EoS_enthalpy_floor       = +1.003
+NS_Eos_enthalpy_ceiling     = 4
+
+NS_Omega_x             	       = 0.
+NS_Omega_y                     = 0.
+NS_Omega_z                     = 0.
+NS_surface_type                = perfect_s2->topology_s2
+NS_surface_finder              = bisection
+NS_surface_change_threshold    = 0.0
+NS_surface_Ylm_max_l           = 10
+NS_enthalpy_allowed_residual   = 1E-8
+NS_enthalpy_update_weight      = 0.5 ## aggressive update!
+NS_Euler_const_criteria        = fix_baryonic_mass
+NS_Euler_const_update_weight   = 1.
+NS_adjust_center_method        = taylor_expansion
+NS_adjust_center_update_weight = 1.
+NS_extrapolate_matter_fields   = inverse_r_expmr
+NS_Eq_phi_polish               = 0.1
+NS_start_off                   = TOV
+
+#### system:
+SYS_initialize        = TOV
+SYS_initialize_fields = XCTS
+
+#### free data
+Free_data_conformal_metric             = flat
+Free_data_conformal_Christoffel_symbol = flat
+Free_data_conformal_Ricci              = flat
+Free_data_trK                          = zero
+
+#### ADM:
+ADM_constraints_method     = from_scratch
+ADM_B1I_form               = zero
+ADM_compute_adm_Kuu_method = use_AIJ
+
+#### stress energy tensor:
+Tij_NS_decomposition = XCTS
+Tij_NS_gConf         = general
+
+#-----------------------------------------------------------------------#
+# Settings:                                                             #
+#-----------------------------------------------------------------------#
+
+#### checkpoint:
+checkpoint_every = 0h
+
+#### basics:
+Derivative_Method               = Spectral
+Interpolation_Method            = Spectral
+Fourier_Transformation_Method   = RFT
+dF/du_for_Newton_Method         = Spectral
+
+#-----------------------------------------------------------------------#
+# Grid and Geometry:                                                    #
+#-----------------------------------------------------------------------#
+
+#### grid:
+grid_kind                     = SplitCubedSpherical(NS)
+grid_set_NS                   = center
+grid_around_box_length        = auto # ~ 3 times of the NS radius
+grid_central_box_length       = auto # ~ 20% of the TOV isotropic radius
+grid_outermost_radius         = 1E5
+grid_verbose                  = no
+
+#### resolutions:
+## note 60 iters are safe choice for spinning cases as well
+n_a = 8(x60) ->10(x60)->12(x60)->14(x60)->16(x60) #->18(x60)->20(x60)->22(x60)
+n_b = 8(x60) ->10(x60)->12(x60)->14(x60)->16(x60) #->18(x60)->20(x60)->22(x60)
+n_c = 12(x60)->14(x60)->16(x60)->18(x60)->20(x60) #->22(x60)->24(x60)->26(x60)
+
+grid_SplitCS_max_n_a         = 40
+grid_SplitCS_max_n_b         = 40
+grid_SplitCS_max_n_c         = 40
+
+#-----------------------------------------------------------------------#
+# Equations and Solve:                                                  #
+#-----------------------------------------------------------------------#
+
+#### what and where to solve:
+Eq_type                         = Elliptic
+Eq_elliptic_test                = no
+
+Eq_phi                          = XCTS_curve_Type3_DDM, NS
+Eq_psi                          = XCTS_curve_excision_Type1_DDM, .*
+Eq_alphaPsi                     = XCTS_curve_excision_Type2_DDM, .*
+Eq_B0_U0                        = XCTS_flat_excision_Type1_DDM, .*
+Eq_B0_U1                        = XCTS_flat_excision_Type1_DDM, .*
+Eq_B0_U2                        = XCTS_flat_excision_Type1_DDM, .*
+Eq_update_method                = relaxed_scheme
+Eq_update_weight_phi            = 0.2
+Eq_update_weight_psi            = 0.2
+Eq_update_weight_alphaPsi       = 0.2
+Eq_update_weight_B0_U0          = 0.2
+Eq_update_weight_B0_U1          = 0.2
+Eq_update_weight_B0_U2          = 0.2
+
+#### solve settings:
+## note we need to solve for beta as Eq(bete) = S( j(phi,NS_Omega) ).
+## note we need to solve for phi  as Eq(phi)  = S( beta,NS_omega ).
+solve_Order                     = phi,psi,alphaPsi,B0_U0,B0_U1,B0_U2
+solve_Newton_Update_Weight      = 1.
+solve_residual                  = 1E-10
+solve_residual_factor           = 1E-5
+solve_Max_Iteration             = 1
+solve_Max_Newton_Step           = 1
+solve_Method                    = DDM_Schur_Complement
+solve_UMFPACK_refinement_step   = 0
+solve_UMFPACK_size              = 1
+
+#-----------------------------------------------------------------------#
+# Print:                                                                #
+#-----------------------------------------------------------------------#
+
+#### outputs: (regular expression is supported)
+txt_output_0d  = ham,mom,eq_residual
+
+#txt_output_1d  = ^phi, ^psi, ^alphaPsi, ^B0, ^beta, eq_residual,\
+#  ham, mom, enthalpy, rho0, ^drho0_D.,e0,EConfP,EConfC,EConf,\
+#  d+phi_D.+, d+psi_D.+, d+alphaPsi_D.+, d+B._U.D.+
+
+## lines separated with ',' and the fix values take place in [0,1]x[0,1]
+#txt_output_1d_line = (X,0.5,0.5),(0.5,Y,0.5),(0.5,0.5,Z)
+
+#silo_output_3d = ^phi,^psi,^alphaPsi,^B0,^beta,eq_residual,\
+#  ham,mom,(dphi_D0,dphi_D1,dphi_D2),\
+#  enthalpy,rho0,(drho0_D0,drho0_D1,drho0_D2),\
+#  drho0_D0,drho0_D1,drho0_D2,\
+#  (B0_U0,B0_U1,B0_U2),(beta_U0,beta_U1,beta_U2)
+
+#-----------------------------------------------------------------------#
+# The End                                                               #
+#-----------------------------------------------------------------------#
