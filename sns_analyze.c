@@ -133,14 +133,13 @@ static void compute_properties(Physics_T *const phys/* sns */)
   Psetd("NS_Spin_y",s[1]);
   Psetd("NS_Spin_z",s[2]);
   
-  m = Pgetd("NS_adm_mass");
-  Psetd("NS_chi_x",s[0]/Pow2(m));
-  Psetd("NS_chi_y",s[1]/Pow2(m));
-  Psetd("NS_chi_z",s[2]/Pow2(m));
-  
   /* SNS: */
   observe(phys,"ADM(M)",Pgets(P_"Observe_ADM_M"),&m);
   Psetd(P_"adm_mass",m);
+  /* for NS chi we need adm_mass. Note: s is calculated a few lines above. */
+  Psetd("NS_chi_x",s[0]/Pow2(m));
+  Psetd("NS_chi_y",s[1]/Pow2(m));
+  Psetd("NS_chi_z",s[2]/Pow2(m));
   
   observe(phys,"Komar(M)",Pgets(P_"Observe_Komar_M"),&m);
   Psetd(P_"Komar_mass",m);
